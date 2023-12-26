@@ -4,6 +4,7 @@ const PagesSchema = new mongoose.Schema(
   {
     title: {
       type: String,
+      unique: true,
     },
     subTitle: {
       type: String,
