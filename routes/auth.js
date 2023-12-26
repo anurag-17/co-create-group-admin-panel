@@ -15,10 +15,8 @@ router.route("/adminLogin").post(adminLogin);
 
 router.route("/logout").get(logout);
 
-// Create User
 router.route("/register").post(register);
 
-// Password
 router.post("/updatePassword", isAuthenticatedUser, updatePassword);
 
 router.route("/forgotpassword").post(forgotPassword);
