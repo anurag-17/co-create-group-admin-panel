@@ -10,11 +10,11 @@ const {
 } = require("../controller/pages");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 
-router.post("/createPage", createPage);
+router.post("/createPage", isAuthenticatedUser, authorizeRoles("admin"), createPage);
 
-router.put("/updatePage", updatePage);
+router.put("/updatePage", isAuthenticatedUser, authorizeRoles("admin"), updatePage);
 
-router.delete("/deletePage", deletePage);
+router.delete("/deletePage", isAuthenticatedUser, authorizeRoles("admin"), deletePage);
 
 router.get("/getPage/:id", getPage);
 

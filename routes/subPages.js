@@ -11,13 +11,13 @@ const {
 } = require('../controller/subPages');
 const { isAuthenticatedUser, authorizeRoles } = require('../middleware/auth');
 
-router.post('/createSubPage', createSubPage);
+router.post('/createSubPage', isAuthenticatedUser, authorizeRoles("admin"), createSubPage);
 
-router.put('/updateSubPage', updateSubPage);
+router.put('/updateSubPage', isAuthenticatedUser, authorizeRoles("admin"), updateSubPage);
 
-router.delete('/deleteSubPage', deleteSubPage);
+router.delete('/deleteSubPage', isAuthenticatedUser, authorizeRoles("admin"), deleteSubPage);
 
-router.post('/deleteBulkSubPages', deleteBulkSubPages);
+router.post('/deleteBulkSubPages', isAuthenticatedUser, authorizeRoles("admin"), deleteBulkSubPages);
 
 router.get('/getSubPage/:id', getSubPage);
 
