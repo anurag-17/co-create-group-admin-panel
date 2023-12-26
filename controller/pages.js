@@ -63,12 +63,16 @@ exports.getAllPages = asyncHandler(async (req, res) => {
 
     const pages = await pagesQuery.skip(skip).limit(limit).exec();
 
+    const totalPages = Math.ceil(total / limit);
+
     res.json({
       total,
       page,
+      totalPages,
       pages,
     });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
