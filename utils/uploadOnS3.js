@@ -2,9 +2,9 @@ const { S3 } = require('aws-sdk');
 const AWS = require('aws-sdk');
 
 const s3Bucket = new AWS.S3({
-    accessKeyId: process.env.KEYID,
-    secretAccessKey: process.env.KEY,
-    region: 'us-east-1',
+    accessKeyId: process.env.awsAccessKey,
+    secretAccessKey: process.env.awsSecretkey,
+    region: process.env.region,
 });
 
 function uploadOnS3(file, filename, contentType) {
@@ -12,10 +12,10 @@ function uploadOnS3(file, filename, contentType) {
     var parentFolder = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
     const params = {
-        Bucket: process.env.BUCKET,
+        Bucket: process.env.bucket,
         Key: parentFolder + '/' + filename,
         Body: file,
-        ContentType: contentType
+        // ContentType: contentType
     };
     return new Promise(function (resolve, reject) {
         s3Bucket.upload(params, function (err, data) {

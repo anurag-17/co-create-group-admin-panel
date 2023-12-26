@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const multer = require('multer');
 const {
   register,
   adminLogin,
@@ -8,8 +8,11 @@ const {
   forgotPassword,
   resetPassword,
   updatePassword,
+  uploadImage
 } = require("../controller/auth");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 router.route("/adminLogin").post(adminLogin);
 
@@ -23,5 +26,6 @@ router.route("/forgotpassword").post(forgotPassword);
 
 router.route("/resetpassword/:resetToken").put(resetPassword);
 
+router.route("/upload").post( upload.single('file'), uploadImage)
 
 module.exports = router;

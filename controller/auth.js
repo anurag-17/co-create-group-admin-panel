@@ -7,6 +7,7 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 // const uniqid = require('uniqid');
 // const { generateToken } = require("../config/jwtToken");
 const sendToken = require("../utils/jwtToken");
+const uploadOnS3 = require("../utils/uploadOnS3");
 
 
 exports.register = async (req, res, next) => {
@@ -230,5 +231,22 @@ exports.updatePassword = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Password change failed" });
+  }
+};
+
+exports.uploadImage = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "Invalid request" });
+    }
+
+    let fileName = req.file.originalname;
+
+    let url = await uploadOnS3(req.file.buffer, fileName);
+
+    return res.status(200).json({ status: true, url: url });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
