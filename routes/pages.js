@@ -18,8 +18,6 @@ router.delete("/deletePage", deletePage);
 
 router.get("/getPage/:id", getPage);
 
-router.delete("/deletePage", deletePage);
-
 router.get("/getAllPages", getAllPages);
 
 module.exports = router;
