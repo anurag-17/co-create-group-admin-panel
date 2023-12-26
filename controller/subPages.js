@@ -4,8 +4,18 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 
 // Create a new subpage
 exports.createSubPage = asyncHandler(async (req, res) => {
-  const newSubPage = await SubPages.create(req.body);
-  res.status(201).json(newSubPage);
+  try {
+    const newSubPage = await SubPages.create(req.body);
+    res.status(201).json(newSubPage);
+  } catch (error) {
+    if (error.code === 11000 && error.keyPattern.title) {
+      // Duplicate key error (title is not unique)
+      res.status(400).json({ error: "Title must be unique" });
+    } else {
+      // Other errors
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
 });
 
 // Update an existing subpage
