@@ -4,8 +4,18 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 
 // Create a new page
 exports.createPage = asyncHandler(async (req, res) => {
-  const newPage = await Pages.create(req.body);
-  res.status(201).json(newPage);
+  try {
+    const newPage = await Pages.create(req.body);
+    res.status(201).json(newPage);
+  } catch (error) {
+    if (error.code === 11000 && error.keyPattern.title) {
+      // Duplicate key error (title is not unique)
+      res.status(400).json({ error: "Title must be unique" });
+    } else {
+      // Other errors
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
 });
 
 // Update an existing page
