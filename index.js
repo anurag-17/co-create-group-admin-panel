@@ -8,6 +8,8 @@ const path = require("path");
 const dotenv = require("dotenv");
 const fs = require("fs");
 const session = require("express-session");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
 
 app.use(cors({ origin: "*" }));
 app.use(cookieParser("secret"));
@@ -20,8 +22,17 @@ app.use(express.urlencoded({ limit: "5mb", extended: true }));
 dotenv.config({ path: "./.env" });
 const PORT = process.env.PORT;
 
-//Admin
+// Swagger GUI API 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Admin
 app.use("/api/auth", require("./routes/auth"));
+
+// Pages
+app.use("/api/pages", require("./routes/pages"));
+
+// SubPages
+app.use("/api/subPages", require("./routes/subPages"));
 
 if (process.env.NODE_ENV === "dev") {
   //replaced "production" with "dev"
