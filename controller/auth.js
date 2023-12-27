@@ -8,7 +8,14 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 // const { generateToken } = require("../config/jwtToken");
 const sendToken = require("../utils/jwtToken");
 const uploadOnS3 = require("../utils/uploadOnS3");
+const AWS = require('aws-sdk');
 
+
+const s3 = new AWS.S3({
+  accessKeyId: process.env.awsAccessKey,
+  secretAccessKey: process.env.awsSecretkey,
+  region: process.env.region,
+});
 
 exports.register = async (req, res, next) => {
   const { email, mobile } = req.body;
@@ -249,4 +256,26 @@ exports.uploadImage = async (req, res, next) => {
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }
+};
+
+exports.deleteData = async (req, res, next) => {
+    try {
+        // Extract the key from the URL
+        const url = decodeURIComponent(req.body.url);
+        const key = url.substring(url.lastIndexOf('/') + 1);
+
+        // Specify the parameters for S3 deletion
+        const params = {
+            Bucket: process.env.bucket,
+            Key: key,
+        };
+
+        // Delete the object from S3
+        await s3.deleteObject(params).promise();
+
+        return res.status(200).json({ status: true, message: 'Data removed successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
 };
