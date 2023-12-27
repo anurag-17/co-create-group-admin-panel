@@ -8,6 +8,7 @@ const {
   deleteBulkSubPages,
   getSubPage,
   getAllSubPages,
+  subPages
 } = require('../controller/subPages');
 const { isAuthenticatedUser, authorizeRoles } = require('../middleware/auth');
 
@@ -20,6 +21,8 @@ router.delete('/deleteSubPage', isAuthenticatedUser, authorizeRoles("admin"), de
 router.post('/deleteBulkSubPages', isAuthenticatedUser, authorizeRoles("admin"), deleteBulkSubPages);
 
 router.get('/getSubPage/:id', getSubPage);
+
+router.get('/subPages/:pageId', subPages);
 
 router.get('/getAllSubPages', getAllSubPages);
 

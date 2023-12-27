@@ -1,4 +1,5 @@
 const SubPages = require("../models/SubPages");
+const Pages = require("../models/Pages");
 const asyncHandler = require("express-async-handler");
 const validateMongoDbId = require("../utils/validateMongodbId");
 
@@ -93,3 +94,23 @@ exports.getAllSubPages = asyncHandler(async (req, res) => {
   }
 });
 
+exports.subPages = asyncHandler(async (req, res) => {
+  const { pageId } = req.params;
+
+  try {
+    // Find the Pages document with the given _id and isSubpage=true
+    const page = await Pages.findOne({ _id: pageId, isSubpage: true });
+
+    if (!page) {
+      return res.status(404).json({ error: "Subpage not found" });
+    }
+
+    // Find the SubPages documents with the matching pageId
+    const subpages = await SubPages.find({ pageId: page._id });
+
+    res.json({ page, subpages });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
