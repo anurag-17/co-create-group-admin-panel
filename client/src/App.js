@@ -22,7 +22,8 @@ function App() {
     return isAuthenticated ? (
       element
     ) : (
-      <Navigate to="/admin-login" />
+      element
+      // <Navigate to="/admin-login" />
     );
   }
  

@@ -4,8 +4,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../../websiite-loader/Index";
 import { BASE_URL } from "../../config";
+import VideoPopup from "../../pages/modals/VideoPopup";
 
-const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
+const EditPage = ({
+  closeEditPopup,
+  editData,
+  refreshdata,
+  updateId,
+  pageData,
+}) => {
   // console.log(editData);
   const [edit, setEdit] = useState({
     id: updateId,
@@ -35,7 +42,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
         bgUrl: videoUrl,
       },
       headers: {
-        "authorization": `${token}`,
+        authorization: `${token}`,
         "Content-Type": "application/json",
       },
     };
@@ -125,7 +132,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
         // console.log('Video uploaded:', response?.data);
         const videoUrl = response?.data?.url;
 
-        setEdit({ ...edit, 'bgUrl': videoUrl });
+        setEdit({ ...edit, bgUrl: videoUrl });
         setVideoDisable(true);
         setVideoUploading(false);
       } else {
@@ -144,7 +151,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
     <>
       {videoUploading && <Loader />}
       <form action="" className="" onSubmit={handleSubmit}>
-        <div className="flex flex-col justify-center px-4 py-4 md:px-8  ">
+        <div className="flex flex-col justify-center px-4 py-4 md:px-8 max-h-[600px] overflow-y-scroll">
           <div className="py-2">
             <span className="login-input-label capitalize"> title :</span>
             <input
@@ -166,7 +173,6 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
               placeholder="Enter subtitle"
               className="login-input w-full mt-1 "
               onChange={InputHandler}
-              required
             />
           </div>
           <div className="py-2">
@@ -178,32 +184,51 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
               placeholder="Enter paragraph"
               className="login-input w-full mt-1 "
               onChange={InputHandler}
-              required
             />
           </div>
 
-          <div className="py-2 flex  items-end gap-x-10 mt-2">
+          <div className="py-2 ">
+            <span className="login-input-label "> Main page :</span>
+
+            <select
+              name="pageId"
+              id=""
+              onChange={InputHandler}
+              // defaultValue={editData?.pageId?.title}
+              defaultValue={editData?.pageId?.title || ""}
+              className="login-input w-full mt-1  "
+            >
+              <option value="">Choose main page</option>
+              {pageData?.map((item) => (
+                <option key={item?._id} value={item?._id}>
+                  {item?.title}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="py-2 flex  items-end gap-x-10">
             <div className="w-[50%]">
               <span className="login-input-label cursor-pointer mb-3">
                 Video :
               </span>
-
-              <div className="p-1 flex">
-                <div
-                  className="text-[14px] font-[400]  cursor-pointer text-[blue] whitespace-nowrap"
-                  onClick={() => handleVideo(editData?.bgUrl)}
-                >
-                  background video
+              {editData?.bgUrl && (
+                <div className="p-1 flex">
+                  <div
+                    className="text-[14px] font-[400]  cursor-pointer text-[blue] whitespace-nowrap"
+                    onClick={() => handleVideo(editData?.bgUrl)}
+                  >
+                    background video
+                  </div>
+                  <button
+                    type="button"
+                    className="text-[14px] px-4 font-[400] border rounded h-[25px] text-[red] hover:bg-[#efb3b38a] ml-4"
+                    onClick={() => removeVideo(editData?.bgUrl)}
+                  >
+                    Remove
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="text-[14px] px-4 font-[400] border rounded h-[25px] text-[red] hover:bg-[#efb3b38a] ml-4"
-                  onClick={() => removeVideo(editData?.bgUrl)}
-                >
-                  Remove
-                </button>
-              </div>
-
+              )}
               <div className="flex items-center  w-full pt-4">
                 <input
                   type="file"
@@ -236,19 +261,15 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
               </button>
             </div>
           </div>
-          <div className="mt-4 flex pt-6 items-center justify-center md:justify-end  md:flex-nowrap gap-y-3 gap-x-3 ">
+          <div className="mt-4 pt-2 flex items-center justify-center md:justify-end  md:flex-nowrap gap-y-3 gap-x-3 ">
             <button
               type="button"
-              className="rounded-[6px] py-1 px-4 max-w-[300px] w-full lg:w-[50%] border border-[gray] bg-white text-black"
+              className="secondary_btn"
               onClick={() => closeEditPopup()}
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="custom-button rounded-[6px] py-1 px-4 max-w-[300px] w-full lg:w-[50%] border text-white"
-              disabled={isLoading}
-            >
+            <button type="submit" className="primary_btn" disabled={isLoading}>
               {isLoading ? "Loading.." : "Update"}
             </button>
           </div>
@@ -285,7 +306,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
                     close
                   </Dialog.Title>
 
-                  {/* <VideoPopup closeModal={closeVideoModal} data={videoview} /> */}
+                  <VideoPopup closeModal={closeVideoModal} data={videoview} />
                 </Dialog.Panel>
               </Transition.Child>
             </div>

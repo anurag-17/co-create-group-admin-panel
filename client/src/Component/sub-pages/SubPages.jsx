@@ -7,11 +7,12 @@ import { BASE_URL } from "../config";
 import Pagination from "../pagination/Pagination";
 import EditPage from "./modals/EditPage";
 import DeletePage from "./modals/DeletePages";
-import VideoPopup from "./modals/VideoPopup";
 import CloseIcon from "../Svg/CloseIcon";
+import VideoPopup from "../pages/modals/VideoPopup";
 
 export const headItems = [
   "S. No.",
+  "main page",
   "Page title",
   "Page subtitle",
   "paragraph",
@@ -30,6 +31,7 @@ const SubPages = () => {
   const [openAddPopup, setAddPopup] = useState(false);
   const [openEditPopup, setEditPopup] = useState(false);
   const [openDeletePopup, setDeletePopup] = useState(false);
+  const [allPagesName, setPagesName] = useState([]);
   const visiblePageCount = 10;
   const token = JSON.parse(sessionStorage.getItem("sessionToken"));
 
@@ -49,7 +51,6 @@ const SubPages = () => {
     axios
       .request(options)
       .then((response) => {
-        console.log(response?.data);
         if (response.status === 200) {
           setLoader(false);
           setAllData(response?.data);
@@ -74,7 +75,7 @@ const SubPages = () => {
 
   const handleVideo = (vid) => {
     setOpenVideo(true);
-    setVideoUrl(vid)
+    setVideoUrl(vid);
   };
 
   const closeVideoModal = () => {
@@ -129,6 +130,38 @@ const SubPages = () => {
     setDeletePopup(false);
   };
 
+  useEffect(() => {
+    getAllPage();
+  }, [isRefresh]);
+
+  const getAllPage = () => {
+    setLoader(true);
+    const options = {
+      method: "GET",
+      url: `${BASE_URL}/api/pages/getAllPages`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    axios
+      .request(options)
+      .then((response) => {
+        if (response.status === 200) {
+          setLoader(false);
+          const newArr = response?.data?.pages.filter((page) => {
+            return page.isSubpage == true;
+          });
+          setPagesName(newArr);
+        } else {
+          setLoader(false);
+          return;
+        }
+      })
+      .catch((error) => {
+        setLoader(false);
+        console.error("Error:", error);
+      });
+  };
 
   return (
     <>
@@ -149,12 +182,12 @@ const SubPages = () => {
           {Array.isArray(allData?.subPages) &&
             allData?.subPages?.length > 0 && (
               <div className="rounded-[10px] bg-white py-[30px] px-[20px] flex justify-between items-center mt-[20px] p-6 overflow-x-scroll">
-                <table className="w-full min-w-[640px] table-auto mt-[20px] ">
+                <table className="w-full min-w-[640px] table-auto mt-[20px]">
                   <thead className="">
                     <tr className=" ">
                       {headItems.map((items, inx) => (
-                        <th className="py-3 px-5 text-left bg-white" key={inx}>
-                          <p className="block text-[13px] font-medium uppercase text-[#72727b]">
+                        <th className="py-3 px-4 text-left bg-white" key={inx}>
+                          <p className="block text-[13px] font-medium uppercase text-[#72727b] whitespace-nowrap">
                             {items}
                           </p>
                         </th>
@@ -166,22 +199,23 @@ const SubPages = () => {
                     {allData?.subPages?.map((items, index) => (
                       <tr key={index}>
                         <td className="text-[14px] font-[400] py-3 px-5">
-                          {index +
-                            1 +
-                            10 * (allData?.page - 1)}
+                          {index + 1 + 10 * (allData?.page - 1)}
+                        </td>
+                        <td className="text-[14px] font-[400] py-3 px-5 capitalize">
+                          {items?.pageId?.title}
                         </td>
                         <td className="text-[14px] font-[400] py-3 px-5 capitalize">
                           {items?.title}
                         </td>
-                      
+
                         <td className="text-[14px] font-[400] py-3 px-5 capitalize">
-                          {items?.subTitle}
+                        {items?.subTitle ? items?.subTitle : "-"}
                         </td>
-                      
+
                         <td className="text-[14px] font-[400] py-3 px-5 capitalize">
                           {items?.paragraph}
                         </td>
-                      
+
                         <td className="text-[14px] font-[400] px-5 cursor-pointer py-3 ">
                           <div
                             className="whitespace-nowrap border border-[#407cb892] bg-[#f0f8ff] hover:bg-[#e3eef7] px-3 py-1 rounded cursor-pointer text-center"
@@ -229,12 +263,11 @@ const SubPages = () => {
             getAllData={getAllData}
           />
         )}
-
       </section>
 
-   {/*---------- Video popup---------- */}
+      {/*---------- Video popup---------- */}
 
-   <Transition appear show={openVideo} as={Fragment}>
+      <Transition appear show={openVideo} as={Fragment}>
         <Dialog as="div" className="relative z-30" onClose={closeVideoModal}>
           <Transition.Child
             as={Fragment}
@@ -302,13 +335,19 @@ const SubPages = () => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white py-10 px-2 md:px-12 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="xl:text-[20px] text-[18px] font-semibold leading-6 text-gray-900 text-center md:text-left px-2"
+                <div
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-right absolute right-[25px] top-[20px] cursor-pointer"
+                    onClick={closeAddPopup}
                   >
-                    Add new page 
+                    <CloseIcon />
+                  </div>
+                  <Dialog.Title
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-center md:text-left px-2"
+                  >
+                    Add new page
                   </Dialog.Title>
                   <AddNewPage
+                    pageData={allPagesName}
                     closeAddPopup={closeAddPopup}
                     refreshdata={refreshData}
                   />
@@ -345,13 +384,19 @@ const SubPages = () => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white py-10 px-2 md:px-12 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="xl:text-[20px] text-[18px] font-semibold leading-6 text-gray-900 text-center md:text-left px-2"
+                <div
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-right absolute right-[25px] top-[20px] cursor-pointer"
+                    onClick={closeEditPopup}
                   >
-               Edit page content
+                    <CloseIcon />
+                  </div>
+                  <Dialog.Title
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-center md:text-left px-2"
+                  >
+                    Edit page content
                   </Dialog.Title>
                   <EditPage
+                    pageData={allPagesName}
                     closeEditPopup={closeEditPopup}
                     refreshdata={refreshData}
                     editData={editData}
@@ -390,11 +435,16 @@ const SubPages = () => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white py-10 px-2 md:px-12 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="xl:text-[20px] text-[18px] font-semibold leading-6 text-gray-900 text-center md:text-left px-2"
+                <div
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-right absolute right-[25px] top-[20px] cursor-pointer"
+                    onClick={closeDeleteModal}
                   >
-               Delete page 
+                    <CloseIcon />
+                  </div>
+                  <Dialog.Title
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-center md:text-left px-2"
+                  >
+                    Delete page
                   </Dialog.Title>
                   <DeletePage
                     refreshdata={refreshData}

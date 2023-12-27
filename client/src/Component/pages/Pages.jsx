@@ -15,6 +15,7 @@ export const headItems = [
   "Page title",
   "Page subtitle",
   "paragraph",
+  "subpage",
   "Video",
   "Action",
 ];
@@ -87,7 +88,7 @@ const Pages = () => {
       setLoader(true);
       const options = {
         method: "GET",
-        url: `${BASE_URL}/api/subPages/getSubPage/${id}`,
+        url: `${BASE_URL}/api/pages/getPage/${id}`,
         headers: {
           // Authorization: `${token}`,
           "Content-Type": "application/json",
@@ -170,16 +171,20 @@ const Pages = () => {
                             1 +
                             10 * (allData?.page - 1)}
                         </td>
-                        <td className="text-[14px] font-[400] py-3 px-5 capitalize">
+                        <td className="text-[14px] font-[400] py-3 px-5 uppercase">
                           {items?.title}
                         </td>
                       
-                        <td className="text-[14px] font-[400] py-3 px-5 capitalize">
-                          {items?.subTitle}
+                        <td className="text-[14px] font-[400] py-3 px-5 ">
+                          {items?.subTitle ? items?.subTitle : "-"}
                         </td>
                       
-                        <td className="text-[14px] font-[400] py-3 px-5 capitalize">
+                        <td className="text-[14px] font-[400] py-3 px-5 ">
                           {items?.paragraph}
+                        </td>
+                      
+                        <td className="text-[14px] font-[400] py-3 px-5 ">
+                          {items?.isSubpage ? "Yes" : "No"}
                         </td>
                       
                         <td className="text-[14px] font-[400] px-5 cursor-pointer py-3 ">
@@ -302,9 +307,16 @@ const Pages = () => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white py-10 px-2 md:px-12 text-left align-middle shadow-xl transition-all">
+                <div
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-right absolute right-[25px] top-[20px] cursor-pointer"
+                    onClick={closeAddPopup}
+                  >
+                    <CloseIcon />
+                  </div>
+
                   <Dialog.Title
                     as="h3"
-                    className="xl:text-[20px] text-[18px] font-semibold leading-6 text-gray-900 text-center md:text-left px-2"
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-center md:text-left px-2"
                   >
                     Add new page 
                   </Dialog.Title>
@@ -345,9 +357,15 @@ const Pages = () => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white py-10 px-2 md:px-12 text-left align-middle shadow-xl transition-all">
+                <div
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-right absolute right-[25px] top-[20px] cursor-pointer"
+                    onClick={closeEditPopup}
+                  >
+                    <CloseIcon />
+                  </div>
                   <Dialog.Title
                     as="h3"
-                    className="xl:text-[20px] text-[18px] font-semibold leading-6 text-gray-900 text-center md:text-left px-2"
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-center md:text-left px-2"
                   >
                Edit page content
                   </Dialog.Title>
@@ -389,10 +407,10 @@ const Pages = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white py-10 px-2 md:px-12 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-[500px] transform overflow-hidden rounded-2xl bg-white py-10 px-2 md:px-12 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="xl:text-[20px] text-[18px] font-semibold leading-6 text-gray-900 text-center md:text-left px-2"
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-center md:text-left"
                   >
                Delete page 
                   </Dialog.Title>

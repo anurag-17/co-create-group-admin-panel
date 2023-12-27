@@ -60,7 +60,7 @@ const DeletePage = ({ deleteId, closeModal, refreshdata }) => {
       <div className="mt-8">
         <div className="flex justify-between gap-x-5">
           <button
-            className="w-full px-4 text-[13px] border rounded text-[gray]  py-2 hover:bg-[#80808045] focus-visible:outline-none"
+            className="secondary_btn"
             onClick={handleClose}
           >
             No, Keep It

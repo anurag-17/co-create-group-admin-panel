@@ -19,6 +19,13 @@
     @apply px-4 py-2 rounded-[6px] flex justify-center items-center text-white bg-theme-color text-[14px] font-medium hover:border-white hover:bg-theme_secondary focus-visible:outline-none;
   }
 
+  .primary_btn {
+    @apply px-4 py-2 rounded-[6px] flex justify-center items-center text-white bg-theme-color text-[14px] font-medium hover:border-white hover:bg-theme_secondary focus-visible:outline-none max-w-[300px] w-full ;
+  }
+  .secondary_btn {
+    @apply px-4 py-2 rounded-[6px] flex justify-center items-center text-[gray] border text-[14px] font-medium hover:border-[gray] hover:bg-menu_secondary focus-visible:outline-none max-w-[300px] w-full;
+  }
+
   td {
     @apply text-[14px] font-[400] py-3 px-5 border-b
   }
@@ -81,7 +88,8 @@ button:hover {
 
 /* / scroll bar / */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 2px;
+  height: 2px;
 }
 
 ::-webkit-scrollbar-track {

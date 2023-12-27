@@ -4,6 +4,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../../websiite-loader/Index";
 import { BASE_URL } from "../../config";
+import VideoPopup from "./VideoPopup";
+import CloseIcon from "../../Svg/CloseIcon";
 
 const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
   // console.log(editData);
@@ -68,6 +70,9 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
   const InputHandler = (e) => {
     if (e.target.name === "bgUrl") {
       setVideo({ file: e.target.files[0] });
+    }
+    else if (e.target.name === "isSubpage") {
+      setEdit({ ...edit, isSubpage: e.target.value === "yes" });
     } else {
       setEdit({ ...edit, [e.target.name]: e.target.value });
     }
@@ -144,7 +149,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
     <>
       {videoUploading && <Loader />}
       <form action="" className="" onSubmit={handleSubmit}>
-        <div className="flex flex-col justify-center px-4 py-4 md:px-8  ">
+        <div className="flex flex-col justify-center px-4 py-4 md:px-8 max-h-[600px] overflow-y-scroll ">
           <div className="py-2">
             <span className="login-input-label capitalize"> title :</span>
             <input
@@ -182,7 +187,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
             />
           </div>
 
-          <div className="py-2 flex  items-end gap-x-10 mt-2">
+          <div className="py-2 flex  items-end gap-x-10 ">
             <div className="w-[50%]">
               <span className="login-input-label cursor-pointer mb-3">
                 Video :
@@ -216,6 +221,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
                 />
               </div>
             </div>
+
             <div className="">
               <button
                 className={`focus-visible:outline-none  text-white text-[13px] px-4 py-1 rounded
@@ -235,18 +241,51 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
                   : "Upload"}
               </button>
             </div>
+
           </div>
-          <div className="mt-4 flex pt-6 items-center justify-center md:justify-end  md:flex-nowrap gap-y-3 gap-x-3 ">
+
+            <div className="py-2 flex items-center gap-x-5">
+              <span className="login-input-label">
+                Are you want to add subpage :
+              </span>
+              <div className="flex gap-x-10 py-3">
+                {/* Radio input for option 1 */}
+                <label className="text-[14px] flex gap-x-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    value="yes"
+                    name="isSubpage"
+                    defaultChecked={editData.isSubpage === true}
+                    onChange={InputHandler}
+                  />
+                  Yes
+                </label>
+
+                {/* Radio input for option 2 */}
+                <label className="text-[14px] flex gap-x-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    value="no"
+                    name="isSubpage"
+                    defaultChecked={editData.isSubpage === false}
+                    onChange={InputHandler}
+                  />
+                  No
+                </label>
+              </div>
+            </div>
+
+          <div className="mt-4 flex items-center justify-center md:justify-end  md:flex-nowrap gap-y-3 gap-x-3 ">
             <button
               type="button"
-              className="rounded-[6px] py-1 px-4 max-w-[300px] w-full lg:w-[50%] border border-[gray] bg-white text-black"
+              className="secondary_btn"
               onClick={() => closeEditPopup()}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="custom-button rounded-[6px] py-1 px-4 max-w-[300px] w-full lg:w-[50%] border text-white"
+               className="primary_btn"
               disabled={isLoading}
             >
               {isLoading ? "Loading.." : "Update"}
@@ -256,7 +295,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
       </form>
 
       <Transition appear show={openVideo} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeVideoModal}>
+        <Dialog as="div" className="relative z-50" onClose={closeVideoModal}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -266,7 +305,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 bg-black/70" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -281,11 +320,15 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-[500px] transform overflow-hidden rounded-2xl bg-white py-10 px-12 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title className="xl:text-[20px] text-[18px] text-right font-medium leading-6 text-gray-900">
-                    close
-                  </Dialog.Title>
+                <div
+                    className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-right absolute right-[15px] top-[15px] cursor-pointer"
+                    onClick={closeVideoModal}
+                  >
+                    <CloseIcon />
+                  </div>
 
-                  {/* <VideoPopup closeModal={closeVideoModal} data={videoview} /> */}
+
+                  <VideoPopup closeModal={closeVideoModal} data={videoview} />
                 </Dialog.Panel>
               </Transition.Child>
             </div>

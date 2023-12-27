@@ -137,7 +137,7 @@ const SideMenu = () => {
                         <div className="">
                             <div className="bg-white h-[1px] w-[70%] mx-auto my-[40px]"></div>
                             <div
-                                className={` pl-6 py-3 mx-5 rounded text-center cursor-pointer my-3 flex items-center transition-colors dash-menu gap-x-3  font-semibold hover:bg-[#343a47] hover:text-white hover:rounded-md }`}
+                                className={` pl-6 py-3 mx-5 rounded text-center cursor-pointer my-3 flex items-center transition-colors dash-menu gap-x-3  font-semibold hover:bg-menu_secondary hover:text-white hover:rounded-md }`}
                                 onClick={handleSignout}
                             >
                                 <LogoutIcon />
