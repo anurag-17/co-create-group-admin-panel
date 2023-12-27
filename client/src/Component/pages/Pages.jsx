@@ -34,6 +34,7 @@ const Pages = () => {
   const visiblePageCount = 10;
   const token = JSON.parse(sessionStorage.getItem("sessionToken"));
 
+  
   useEffect(() => {
     getAllData(1);
   }, [isRefresh]);
