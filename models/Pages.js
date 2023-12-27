@@ -10,6 +10,10 @@ const PagesSchema = new mongoose.Schema(
     subTitle: {
       type: String,
     },
+    isSubpage: {
+      type: Boolean,
+      default: false
+    },
     paragraph: {
       type: String,
     },
