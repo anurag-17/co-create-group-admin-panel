@@ -34,19 +34,21 @@ app.use("/api/pages", require("./routes/pages"));
 // SubPages
 app.use("/api/subPages", require("./routes/subPages"));
 
-if (process.env.NODE_ENV === "dev") {
-  //replaced "production" with "dev"
-  // app.use(express.static("client/build"));
+if (process.env.NODE_ENV === "dev") { //replaced "production" with "dev"
 
-  // app.get("*", (req, res) => {
-  //   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  // });
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
 } else {
   app.get("/", (req, res) => {
     res.send("API is running..");
   });
-}
+};
+
 const server = app.listen(PORT, () =>
   console.log(`Server running on port ${PORT}`)
 );
+
 connectDB();

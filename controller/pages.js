@@ -8,7 +8,7 @@ exports.createPage = asyncHandler(async (req, res) => {
     const newPage = await Pages.create(req.body);
     res.status(201).json(newPage);
   } catch (error) {
-    if (error.code === 11000 && error.keyPattern.title) {
+    if (error.name === "MongoError" && error.code === 11000) {
       // Duplicate key error (title is not unique)
       res.status(400).json({ error: "Title must be unique" });
     } else {

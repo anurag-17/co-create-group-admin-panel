@@ -5,6 +5,7 @@ const PagesSchema = new mongoose.Schema(
     title: {
       type: String,
       unique: true,
+      required: true,
     },
     subTitle: {
       type: String,
