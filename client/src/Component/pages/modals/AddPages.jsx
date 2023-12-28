@@ -19,7 +19,6 @@ const AddNewPage = ({ closeAddPopup, refreshdata }) => {
   const [videoUploading, setVideoUploading] = useState(false);
   const token = JSON.parse(sessionStorage.getItem("sessionToken"));
 
-
   const InputHandler = (e) => {
     if (e.target.name === "bgUrl") {
       setVideo({ file: e.target.files[0] });
@@ -86,6 +85,9 @@ const AddNewPage = ({ closeAddPopup, refreshdata }) => {
           setLoading(false);
           refreshdata();
           closeAddPopup();
+        } else if (response.status === 203) {
+          toast.error(response?.data?.error);
+          setLoading(false);
         } else {
           toast.error("Invalid details");
           setLoading(false);

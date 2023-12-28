@@ -5,13 +5,13 @@ const awsConfig = {
   secretAccessKey: process.env.awsSecretkey,
   region: "us-east-1",
 };
-
+// console.log(process.env)
 const SES = new AWS.SES(awsConfig);
 
 const sendEmail = async (options) => {
     try {
         const mailOptions = {
-            Source: process.env.MAIL_FROM,
+            Source: "akash.hardia@gmail.com",
             Destination: {
                 ToAddresses: [options.to],
             },
@@ -27,13 +27,7 @@ const sendEmail = async (options) => {
             },
         };
 
-        SES.sendEmail(mailOptions, function (err, Data) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(Data);
-            }
-        });
+        return await SES.sendEmail(mailOptions).promise(); 
     } catch (error) {
         console.log(error);
     }

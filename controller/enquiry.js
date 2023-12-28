@@ -12,7 +12,7 @@ async function isEmailValid(email) {
 exports.createEnquiry = asyncHandler(async (req, res) => {
   try {
     const { email } = req.body;
-
+console.log(req.body)
     // Validate the email address
     const { valid, reason, validators } = await isEmailValid(email);
 

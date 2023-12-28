@@ -181,7 +181,7 @@ const Pages = () => {
                         </td>
                       
                         <td className="text-[14px] font-[400] py-3 px-5 ">
-                          {items?.paragraph}
+                         {items?.paragraph ? items?.paragraph : "-"}
                         </td>
                       
                         <td className="text-[14px] font-[400] py-3 px-5 ">

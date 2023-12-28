@@ -16,20 +16,15 @@ import Feedbackicon from "./Svg/Feedbackicon";
 import Pages from "./pages/Pages";
 import SubPages from "./sub-pages/SubPages";
 import Enquiry from "./enquiry/Enquiry";
+import ContactDetails from "./contact-details/ContactDetails";
 
 
 export const menus = [
     {
-        id: 0,
+        id: 1,
         label: "Dashboard",
         component: <Dashboard />,
         icon: <DashboardIcon />
-    },
-    {
-        id: 1,
-        label: "User",
-        component: <User />,
-        icon: <UserIcon />,
     },
     {
         id: 2,
@@ -47,6 +42,12 @@ export const menus = [
         id: 4,
         label: "Enquiry",
         component: <Enquiry />,
+        icon: <Feedbackicon />,
+    },
+    {
+        id: 5,
+        label: "Contact Details",
+        component: <ContactDetails />,
         icon: <Feedbackicon />,
     },
 ]

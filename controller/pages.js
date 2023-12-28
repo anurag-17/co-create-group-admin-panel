@@ -11,7 +11,7 @@ exports.createPage = asyncHandler(async (req, res) => {
     console.log(error.code);
     if (error.name === "MongoError" || error.code === 11000) {
       // Duplicate key error (title is not unique)
-      res.status(403).json({ error: "Title must be unique" });
+      res.status(203).json({ error: "Title must be unique" });
     } else {
       // Other errors
       res.status(500).json({ error: "Internal Server Error" });
