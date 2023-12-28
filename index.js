@@ -34,6 +34,9 @@ app.use("/api/pages", require("./routes/pages"));
 // SubPages
 app.use("/api/subPages", require("./routes/subPages"));
 
+// Contacts
+app.use("/api/contacts", require("./routes/contacts"));
+
 if (process.env.NODE_ENV === "dev") { //replaced "production" with "dev"
 
   app.use(express.static("client/build"));
