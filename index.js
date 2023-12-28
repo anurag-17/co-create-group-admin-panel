@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === "dev") { //replaced "production" with "dev"
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 } else {
-  app.get("/api", (req, res) => {
+  app.get("/", (req, res) => {
     res.send("API is running..");
   });
 };
