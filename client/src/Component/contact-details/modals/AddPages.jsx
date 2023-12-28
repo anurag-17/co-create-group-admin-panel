@@ -2,73 +2,28 @@ import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../config";
-import Loader from "../../websiite-loader/Index";
+
 
 const AddNewPage = ({ closeAddPopup, refreshdata, pageData }) => {
   const [formData, setFormData] = useState({
-    title: "",
-    subTitle: "",
-    paragraph: "",
-    bgUrl: "",
-    pageId: "",
+    email: "",
+    number: "",
+    address: "",
   });
-  const [video, setVideo] = useState("");
   const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [videoDisable, setVideoDisable] = useState(false);
-  const [videoUploading, setVideoUploading] = useState(false);
   const token = JSON.parse(sessionStorage.getItem("sessionToken"));
 
   const InputHandler = (e) => {
-    if (e.target.name === "bgUrl") {
-      setVideo({ file: e.target.files[0] });
-    } else {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
-  };
-
-  const uploadVideo = async () => {
-    setVideoUploading(true);
-    try {
-      if (!video) {
-        setVideoUploading(false);
-        return toast.warn("Please upload video");
-      }
-
-      const response = await axios.post(`${BASE_URL}/api/auth/upload`, video, {
-        headers: {
-          authorization: `${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      if (response.status === 200) {
-        const videoUrl = response?.data?.url;
-        setFormData({ ...formData, ["bgUrl"]: videoUrl });
-        setVideoDisable(true);
-        setVideoUploading(false);
-      } else {
-        setVideoDisable(false);
-        setVideoUploading(false);
-      }
-    } catch (error) {
-      console.error(
-        "Error uploading video:",
-        error.response?.data || error.message
-      );
-      setVideoUploading(false);
-    }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.bgUrl == "") {
-      toast.error("Please upload video");
-    } else {
       console.log(formData);
       setLoading(true);
       try {
         const response = await axios.post(
-          `${BASE_URL}/api/subPages/createSubPage`,
+          `${BASE_URL}/api/contacts/createContact`,
           formData,
           {
             headers: {
@@ -79,7 +34,7 @@ const AddNewPage = ({ closeAddPopup, refreshdata, pageData }) => {
         );
         console.log(response);
         if (response.status === 201) {
-          toast.success("Category created successfully.");
+          toast.success("Contact details added successfully.");
           setLoading(false);
           refreshdata();
           closeAddPopup();
@@ -92,22 +47,34 @@ const AddNewPage = ({ closeAddPopup, refreshdata, pageData }) => {
         toast.error("Something went wrong, try again later.");
         setLoading(false);
       }
-    }
   };
 
   return (
     <>
-      {videoUploading && <Loader />}
       <div className="">
         <form action="" className="" onSubmit={handleSubmit}>
-          <div className="flex flex-col justify-center lg:px-8 py-4 max-h-[600px] overflow-y-scroll">
-            <div className="  px-4 ">
+          <div className="flex flex-col justify-center lg:px-8 py-4">
+            <div className="pt-3">
               <div className="py-2 ">
-                <span className="login-input-label capitalize"> title :</span>
+                <span className="login-input-label capitalize"> phone :</span>
                 <input
                   type="text"
-                  name="title"
-                  placeholder="Enter page title"
+                  name="number"
+                  placeholder="Enter mobile number"
+                  className="login-input w-full mt-1  "
+                  onChange={InputHandler}
+                  pattern="[6789][0-9]{9}"
+                  title="enter 10 digit no. start number with 6,7,8,9"
+                  required
+                />
+              </div>
+
+              <div className="py-2 ">
+                <span className="login-input-label capitalize"> email :</span>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter email address"
                   className="login-input w-full mt-1  "
                   onChange={InputHandler}
                   required
@@ -115,83 +82,20 @@ const AddNewPage = ({ closeAddPopup, refreshdata, pageData }) => {
               </div>
 
               <div className="py-2 ">
-                <span className="login-input-label capitalize">
-                  subtitle :
-                </span>
-                <input
+                <span className="login-input-label capitalize"> Address :</span>
+                <textarea
                   type="text"
-                  name="subTitle"
-                  placeholder="Enter page subtitle"
-                  className="login-input w-full mt-1  "
+                  name="address"
+                  placeholder="Enter location"
+                  className="login-input w-full mt-1 h-[100px] "
                   onChange={InputHandler}
-                />
-              </div>
-
-              <div className="py-2 ">
-                <span className="login-input-label capitalize">
-                  paragraph :
-                </span>
-                <input
-                  type="text"
-                  name="paragraph"
-                  // pattern="^(?!\s)[a-zA-Z ]{1,}$"
-                  placeholder="Enter category paragraph"
-                  className="login-input w-full mt-1  "
-                  onChange={InputHandler}
-                />
-              </div>
-
-              <div className="py-2 ">
-                <span className="login-input-label "> Main page :</span>
-                <select
-                  name="pageId"
-                  id=""
-                  onChange={InputHandler}
-                  className="login-input w-full mt-1  "
-                >
-                  <option value="">Choose main page</option>
-                  {pageData?.map((item) => (
-                    <option value={item?._id}>{item.title}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="py-2 mt-1 flex  items-end gap-x-10">
-                <div className="w-[50%]">
-                  <span className="login-input-label cursor-pointer mb-1">
-                    Background video :
-                  </span>
-                  <div className="flex items-center  w-full mt-1">
-                    <input
-                      id="video"
-                      type="file"
-                      name="bgUrl"
-                      className="w-full"
-                      onChange={InputHandler}
-                      disabled={videoDisable}
-                      accept="video/mp4,video/x-m4v,video/*"
-                    />
-                  </div>
-                </div>
-                <div className="">
-                  <button
-                    className={`focus-visible:outline-none  text-white text-[13px] px-4 py-1 rounded
-                            ${videoDisable ? "bg-[green]" : "bg-[#070708bd]"}`}
-                    type="button"
-                    onClick={uploadVideo}
-                    disabled={videoDisable || videoUploading}
-                  >
-                    {videoDisable
-                      ? "Uploaded"
-                      : videoUploading
-                      ? "Loading.."
-                      : "Upload"}
-                  </button>
-                </div>
+                  required
+                  maxLength={500}
+                ></textarea>
               </div>
             </div>
 
-            <div className="mt-4 flex pt-6 items-center justify-center md:justify-end  md:flex-nowrap gap-y-3 gap-x-3 ">
+            <div className="flex pt-6 items-center justify-center md:justify-end  md:flex-nowrap gap-y-3 gap-x-3 ">
               <button
                 type="button"
                 className="secondary_btn"

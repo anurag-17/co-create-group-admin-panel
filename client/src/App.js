@@ -2,7 +2,6 @@ import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 
 import SideMenu from "./Component/AdminDashboard";
-import Login from "./Component/Login";
 import './App.css';
 
 import "react-toastify/dist/ReactToastify.css";
@@ -10,8 +9,6 @@ import ResetPassword from "./Component/forgot-password/ResetPassword";
 import ForgotPassword from "./Component/forgot-password/ForgotPassword";
 import ChangePassword from "./Component/change-password/Index";
 import AdminDashboard from "./Component/Login";
-
-
 
 function App() {
 
@@ -22,8 +19,7 @@ function App() {
     return isAuthenticated ? (
       element
     ) : (
-      element
-      // <Navigate to="/admin-login" />
+      <Navigate to="/admin-login" />
     );
   }
  

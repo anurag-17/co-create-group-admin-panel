@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.fdcced61.css",
-    "main.js": "/static/js/main.25ba61c3.js",
+    "main.css": "/static/css/main.b212e9eb.css",
+    "main.js": "/static/js/main.073858f6.js",
     "static/js/787.d5fa4d18.chunk.js": "/static/js/787.d5fa4d18.chunk.js",
     "static/media/Mukta-Regular.ttf": "/static/media/Mukta-Regular.044d4dd07d7636695eda.ttf",
     "static/media/Mukta-Medium.ttf": "/static/media/Mukta-Medium.1dbcaa3b34d2fe6808d3.ttf",
@@ -11,12 +11,12 @@
     "static/media/dashboard.svg": "/static/media/dashboard.5edd8627d3eb9760c30134feb2aa0417.svg",
     "static/media/login_bg.svg": "/static/media/login_bg.2a3438cccdd1f7fbeba6f660f2c04af2.svg",
     "index.html": "/index.html",
-    "main.fdcced61.css.map": "/static/css/main.fdcced61.css.map",
-    "main.25ba61c3.js.map": "/static/js/main.25ba61c3.js.map",
+    "main.b212e9eb.css.map": "/static/css/main.b212e9eb.css.map",
+    "main.073858f6.js.map": "/static/js/main.073858f6.js.map",
     "787.d5fa4d18.chunk.js.map": "/static/js/787.d5fa4d18.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fdcced61.css",
-    "static/js/main.25ba61c3.js"
+    "static/css/main.b212e9eb.css",
+    "static/js/main.073858f6.js"
   ]
 }

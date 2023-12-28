@@ -20,10 +20,10 @@
   }
 
   .primary_btn {
-    @apply px-4 py-2 rounded-[6px] flex justify-center items-center text-white bg-theme-color text-[14px] font-medium hover:border-white hover:bg-theme_secondary focus-visible:outline-none max-w-[300px] w-full ;
+    @apply px-4 py-2 rounded-[6px] flex justify-center items-center text-white bg-theme-color text-[14px] font-semibold hover:border-white hover:bg-theme_secondary focus-visible:outline-none max-w-[300px] w-full ;
   }
   .secondary_btn {
-    @apply px-4 py-2 rounded-[6px] flex justify-center items-center text-[gray] border text-[14px] font-medium hover:border-[gray] hover:bg-menu_secondary focus-visible:outline-none max-w-[300px] w-full;
+    @apply px-4 py-2 rounded-[6px] flex justify-center items-center text-[gray] border text-[14px] font-semibold hover:border-[gray] hover:bg-menu_secondary focus-visible:outline-none max-w-[300px] w-full;
   }
 
   td {
@@ -169,4 +169,6 @@ html {
 .drawer {
   transition: transform 0.3s ease-in-out; /* You can adjust the duration and easing function */
 }
-
+.contact-details svg{
+  fill : white
+}
