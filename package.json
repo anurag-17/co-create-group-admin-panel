@@ -38,5 +38,5 @@
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.0"
   },
-  "proxy": "http://localhost:3000/"
+  "proxy": "http://localhost:3001/"
 }

@@ -15,6 +15,7 @@ import LogoutIcon from "./Svg/Logout";
 import Feedbackicon from "./Svg/Feedbackicon";
 import Pages from "./pages/Pages";
 import SubPages from "./sub-pages/SubPages";
+import Enquiry from "./enquiry/Enquiry";
 
 
 export const menus = [
@@ -45,7 +46,7 @@ export const menus = [
     {
         id: 4,
         label: "Enquiry",
-        component: <SubPages />,
+        component: <Enquiry />,
         icon: <Feedbackicon />,
     },
 ]
@@ -152,7 +153,7 @@ const SideMenu = () => {
                 </div>
 
                 
-                <div className=" bg-[white] w-full" >
+                <div className="bg-[#f3f3f3] w-full" >
 
                     {menus.map((item, index) => (
                         <Fragment key={index}>
