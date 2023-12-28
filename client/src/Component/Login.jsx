@@ -6,7 +6,7 @@ import { BASE_URL } from "./config";
 import RightSection from "./RightSection";
 
 
-const AdminDashboard = () => {
+const AdminLogin = () => {
   const navigate = useNavigate();
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -132,4 +132,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default AdminLogin;

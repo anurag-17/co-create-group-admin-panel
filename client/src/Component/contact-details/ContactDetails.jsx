@@ -26,7 +26,7 @@ const ContactDetails = () => {
   const [openDeletePopup, setDeletePopup] = useState(false);
   const [allPagesName, setPagesName] = useState([]);
   const visiblePageCount = 10;
-
+  
   useEffect(() => {
     getAllData(1);
   }, [isRefresh]);
@@ -65,48 +65,44 @@ const ContactDetails = () => {
     setAddPopup(false);
   };
 
-  //   const handleEdit = (id) => {
-  //     setUpdateId(id);
-  //     try {
-  //       setLoader(true);
-  //       const options = {
-  //         method: "GET",
-  //         url: `${BASE_URL}/api/subPages/getSubPage/${id}`,
-  //         headers: {
-  //           // Authorization: `${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       };
-  //       axios
-  //         .request(options)
-  //         .then((response) => {
-  //           console.log(response);
-  //           if (response.status === 200) {
-  //             // console.log(response);
-  //             setLoader(false);
-  //             setEditData(response?.data);
-  //             setEditPopup(true);
-  //           } else {
-  //             setLoader(false);
-  //             return;
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           setLoader(false);
-  //           console.error("Error:", error);
-  //         });
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
+    const handleEdit = (id) => {
+      setUpdateId(id);
+      try {
+        setLoader(true);
+        const options = {
+          method: "GET",
+          url: `${BASE_URL}/api/contacts/getContact/${id}`,
+          headers: {
+            // Authorization: `${token}`,
+            "Content-Type": "application/json",
+          },
+        };
+        axios
+          .request(options)
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              // console.log(response);
+              setLoader(false);
+              setEditData(response?.data);
+              setEditPopup(true);
+            } else {
+              setLoader(false);
+              return;
+            }
+          })
+          .catch((error) => {
+            setLoader(false);
+            console.error("Error:", error);
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
-  //   const closeEditPopup = () => {
-  //     setEditPopup(false);
-  //   };
-
-  const closeEditPopup = () => {
-    setEditPopup(false);
-  };
+    const closeEditPopup = () => {
+      setEditPopup(false);
+    };
 
   const handleDelete = (id) => {
     setUpdateId(id);
@@ -138,52 +134,52 @@ const ContactDetails = () => {
 
           {Array.isArray(allData?.contacts) &&
             allData?.contacts?.length > 0 && (
-              <div className="rounded-[10px] bg-white py-[60px] px-[20px] flex justify-between items-center mt-[20px] overflow-x-scroll  w-full mx-auto contact-details ">
-                <div className="flex grid-cols-4 gap-5 w-full">
-                  <div className="flex gap-x-5 bg-[#f3f3f3]  px-3 py-5 rounded items-center w-[25%]">
-                    <div className="bg-black h-[45px] w-[45px] rounded-[50%] flex justify-center items-center">
+              <div className="flex flex-col xl:flex-row rounded-[10px] bg-white py-[20px] lg:py-[60px] px-[10px] lg:px-[20px] gap-3 xl:gap-5 justify-between xl:items-center mt-[20px] overflow-x-scroll  w-full mx-auto contact-details ">
+                <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-3 md:gap-5 w-full">
+                  <div className="flex gap-3 xl:gap-x-5 bg-[#f3f3f3]  px-3 py-5 rounded items-center">
+                    <div className="h-[30px] rounded-[50%] flex justify-center items-center">
                       <Phone />
                     </div>
                     <div className=" flex flex-col">
                       <p className=""> Phone </p>
-                      <p className=""> {allData?.contacts[0]?.number} </p>
+                      <p className="text-[15px]"> {allData?.contacts[0]?.number} </p>
                     </div>
                   </div>
-                  <div className="flex gap-x-5 bg-[#f3f3f3]  px-3 py-5 rounded items-center w-[25%]">
-                    <div className="bg-black h-[45px] w-[45px] rounded-[50%] flex justify-center items-center">
+                  <div className="flex gap-3 xl:gap-x-5 bg-[#f3f3f3]  px-3 py-5 rounded items-center">
+                    <div className="h-[30px] rounded-[50%] flex justify-center items-center">
                       <Email />
                     </div>
                     <div className=" flex flex-col">
                       <p className=""> Email </p>
-                      <p className=""> {allData?.contacts[0]?.email} </p>
+                      <p className="text-[15px]"> {allData?.contacts[0]?.email} </p>
                     </div>
                   </div>
-                  <div className="flex gap-x-5 bg-[#f3f3f3]  px-3 py-5 rounded items-center w-[30%]">
-                    <div className="bg-black h-[45px] w-[45px] rounded-[50%] flex justify-center items-center">
+                  <div className="flex gap-3 xl:gap-x-5 bg-[#f3f3f3]  px-3 py-5 rounded items-center">
+                    <div className="h-[30px] rounded-[50%] flex justify-center items-center">
                       <Location />
                     </div>
                     <div className=" flex flex-col">
                       <p className=""> Location </p>
-                      <p className=""> {allData?.contacts[0]?.address} </p>
+                      <p className="text-[15px]"> {allData?.contacts[0]?.address} </p>
                     </div>
                   </div>
-                  <div className="bg-[#f3f3f3]  px-3 py-5 rounded items-center w-[15%]">
-                    <div className="flex flex-col items-center gap-x-3 gap-y-3">
+                </div>
+                  <div className="bg-[#f3f3f3]  px-3 py-5 rounded lg:items-center sm:w-[50%] lg:w-[150px]">
+                    <div className="flex lg:flex-col lg:items-center gap-x-3 gap-y-3">
                       <button
                         className="px-4 text-[13px] border rounded h-[25px] text-[gray] hover:bg-[#aba9a945] hover:text-[gray] w-full"
-                        // onClick={() => handleEdit(items?._id)}
+                        onClick={() => handleEdit(allData?.contacts[0]?._id)}
                       >
                         Edit
                       </button>
                       <button
                         className="px-4 text-[13px] border rounded h-[25px] text-[red] hover:bg-[#efb3b38a] w-full"
-                        // onClick={() => handleDelete(items?._id)}
+                        onClick={() => handleDelete(allData?.contacts[0]?._id)}
                       >
                         Delete
                       </button>
                     </div>
                   </div>
-                </div>
               </div>
             )}
 
@@ -231,7 +227,7 @@ const ContactDetails = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white py-10 px-2 md:px-12 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white py-10 px-4 md:px-12 text-left align-middle shadow-xl transition-all">
                   <div
                     className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-right absolute right-[25px] top-[20px] cursor-pointer"
                     onClick={closeAddPopup}
@@ -282,7 +278,7 @@ const ContactDetails = () => {
                 <Dialog.Panel className="w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white py-10 px-2 md:px-12 text-left align-middle shadow-xl transition-all">
                   <div
                     className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-right absolute right-[25px] top-[20px] cursor-pointer"
-                    // onClick={closeEditPopup}
+                    onClick={closeEditPopup}
                   >
                     <CloseIcon />
                   </div>

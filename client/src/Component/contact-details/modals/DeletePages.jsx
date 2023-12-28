@@ -17,7 +17,7 @@ const DeletePage = ({ deleteId, closeModal, refreshdata }) => {
 
     const options = {
       method: "DELETE",
-      url: `${BASE_URL}/api/subPages/deleteSubPage`,
+      url: `${BASE_URL}/api/contacts/deleteContact`,
       data: {
         id: deleteId,
       },

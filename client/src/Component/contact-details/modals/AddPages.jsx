@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../config";
 
-
 const AddNewPage = ({ closeAddPopup, refreshdata, pageData }) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -19,34 +18,34 @@ const AddNewPage = ({ closeAddPopup, refreshdata, pageData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-      console.log(formData);
-      setLoading(true);
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/api/contacts/createContact`,
-          formData,
-          {
-            headers: {
-              authorization: `${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log(response);
-        if (response.status === 201) {
-          toast.success("Contact details added successfully.");
-          setLoading(false);
-          refreshdata();
-          closeAddPopup();
-        } else {
-          toast.error("Invalid details");
-          setLoading(false);
+    console.log(formData);
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/contacts/createContact`,
+        formData,
+        {
+          headers: {
+            authorization: `${token}`,
+            "Content-Type": "application/json",
+          },
         }
-      } catch (error) {
-        console.error("Error during category:", error);
-        toast.error("Something went wrong, try again later.");
+      );
+      console.log(response);
+      if (response.status === 201) {
+        toast.success("Contact details added successfully.");
+        setLoading(false);
+        refreshdata();
+        closeAddPopup();
+      } else {
+        toast.error("Invalid details");
         setLoading(false);
       }
+    } catch (error) {
+      console.error("Error during category:", error);
+      toast.error("Something went wrong, try again later.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,8 +62,8 @@ const AddNewPage = ({ closeAddPopup, refreshdata, pageData }) => {
                   placeholder="Enter mobile number"
                   className="login-input w-full mt-1  "
                   onChange={InputHandler}
-                  pattern="[6789][0-9]{9}"
-                  title="enter 10 digit no. start number with 6,7,8,9"
+                  // pattern="[0-9]"
+                  title="enter only number"
                   required
                 />
               </div>
@@ -94,7 +93,9 @@ const AddNewPage = ({ closeAddPopup, refreshdata, pageData }) => {
                 ></textarea>
               </div>
             </div>
-
+            <div className="py-1 px-4 text-[red] bg-[#f8cece] text-[14px] font-normal rounded">
+              Note* : If you add new contact details old details will be deleted
+            </div>
             <div className="flex pt-6 items-center justify-center md:justify-end  md:flex-nowrap gap-y-3 gap-x-3 ">
               <button
                 type="button"

@@ -170,5 +170,5 @@ html {
   transition: transform 0.3s ease-in-out; /* You can adjust the duration and easing function */
 }
 .contact-details svg{
-  fill : white
+  fill : black
 }
