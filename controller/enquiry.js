@@ -2,10 +2,27 @@ const Enquiry = require("../models/Enquiry");
 const asyncHandler = require("express-async-handler");
 const validateMongoDbId = require("../utils/validateMongodbId");
 const sendEmail = require("../utils/sendEmail");
+const emailValidator = require('deep-email-validator');
+
+async function isEmailValid(email) {
+  return emailValidator.validate(email)
+}
 
 // Create a new enquiry
 exports.createEnquiry = asyncHandler(async (req, res) => {
   try {
+    const { email } = req.body;
+
+    // Validate the email address
+    const { valid, reason, validators } = await isEmailValid(email);
+
+    if (!valid) {
+      return res.status(403).json({
+        message: "Please provide a valid email address.",
+        reason: validators[reason].reason
+      });
+    };
+
     const newEnquiry = await Enquiry.create(req.body);
     const userEmail = newEnquiry.email;
     const adminEmail = 'negisapna2208@gmail.com';
