@@ -1,11 +1,33 @@
 const Enquiry = require("../models/Enquiry");
 const asyncHandler = require("express-async-handler");
 const validateMongoDbId = require("../utils/validateMongodbId");
+const sendEmail = require("../utils/sendEmail");
 
 // Create a new enquiry
 exports.createEnquiry = asyncHandler(async (req, res) => {
   try {
     const newEnquiry = await Enquiry.create(req.body);
+    const userEmail = newEnquiry.email;
+    const adminEmail = 'negisapna2208@gmail.com';
+
+    // Send confirmation email to the user
+    const userMailOptions = {
+      from: 'akash.hardia@gmail.com',
+      to: userEmail,
+      subject: 'Enquiry Confirmation',
+      text: 'Thank you for filling out the enquiry form. We will get back to you soon!',
+    };
+    await sendEmail(userMailOptions);
+
+    // Send notification email to the admin
+    const adminMailOptions = {
+      from: 'akash.hardia@gmail.com',
+      to: adminEmail,
+      subject: 'New Enquiry Notification',
+      text: `New enquiry received from ${userEmail}. Please check the admin panel for details.`,
+    };
+    await sendEmail(adminMailOptions);
+
     res.status(201).json(newEnquiry);
   } catch (error) {
     console.log(error.code);
