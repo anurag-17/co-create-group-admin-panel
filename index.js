@@ -6,8 +6,8 @@ const bodyParser = require("body-parser");
 const connectDB = require("./config/db");
 const path = require("path");
 const dotenv = require("dotenv");
-const fs = require("fs");
-const session = require("express-session");
+// const fs = require("fs");
+// const session = require("express-session");
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
 
@@ -36,6 +36,10 @@ app.use("/api/subPages", require("./routes/subPages"));
 
 // Contacts
 app.use("/api/contacts", require("./routes/contacts"));
+
+// Contacts
+app.use("/api/enquiry", require("./routes/enquiry"));
+
 
 if (process.env.NODE_ENV === "dev") { //replaced "production" with "dev"
 
