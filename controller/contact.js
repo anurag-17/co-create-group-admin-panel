@@ -5,7 +5,12 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 // Create a new contact
 exports.createContact = asyncHandler(async (req, res) => {
   try {
+    // Delete all existing contacts
+    await Contacts.deleteMany({});
+
+    // Create a new contact
     const newContact = await Contacts.create(req.body);
+
     res.status(201).json(newContact);
   } catch (error) {
     console.log(error.code);
