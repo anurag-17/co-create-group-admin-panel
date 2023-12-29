@@ -1,4 +1,5 @@
 const Pages = require("../models/Pages");
+const SubPages = require("../models/SubPages");
 const asyncHandler = require("express-async-handler");
 const validateMongoDbId = require("../utils/validateMongodbId");
 
@@ -37,6 +38,11 @@ exports.deletePage = asyncHandler(async (req, res) => {
   validateMongoDbId(id);
 
   const deletedPage = await Pages.findByIdAndDelete(id);
+
+  if (deletedPage) {
+    await SubPages.deleteMany({ pageId: deletedPage._id });
+  }
+
   res.json(deletedPage);
 });
 
