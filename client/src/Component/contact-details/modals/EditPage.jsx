@@ -75,8 +75,6 @@ const EditPage = ({
                   className="login-input w-full mt-1  "
                   defaultValue={editData?.number}
                   onChange={InputHandler}
-                  pattern="[6789][0-9]{9}"
-                  title="enter 10 digit no. start number with 6,7,8,9"
                   required
                 />
               </div>
