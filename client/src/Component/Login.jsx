@@ -38,6 +38,7 @@ const AdminLogin = () => {
         toast.success("Login successful!");
         setLoading(false);
         sessionStorage.setItem("sessionToken",JSON.stringify(response?.data?.token));
+        sessionStorage.setItem("adminId",JSON.stringify(response?.data?.user?._id));
         navigate("/admin-dashboard");
       } else {
         toast.error("Invalid credentails");
@@ -48,6 +49,7 @@ const AdminLogin = () => {
       console.error("Error during login:", error);
       toast.error("Login failed please try again!");
       sessionStorage.removeItem("sessionToken");
+      sessionStorage.removeItem("adminId");
       setLoading(false);
     }
   };

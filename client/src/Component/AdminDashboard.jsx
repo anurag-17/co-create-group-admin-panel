@@ -60,6 +60,7 @@ const SideMenu = () => {
 
   const handleSignout = () => {
     sessionStorage.removeItem("sessionToken");
+    sessionStorage.removeItem("adminId");
     navigate("/admin-login");
   };
 

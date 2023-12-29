@@ -49,7 +49,7 @@ const Dashboard = () => {
                     </Menu.Item>
                     <Menu.Item>
                       <Link
-                        to="/login"
+                        to="/admin-login"
                         className="flex gap-x-3 hover:bg-lightBlue-600 hover:underline text-gray-700 rounded  text-sm group transition-colors items-center"
 
                       >

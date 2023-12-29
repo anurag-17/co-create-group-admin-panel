@@ -24,7 +24,7 @@ const EditPage = ({
   const [isLoading, setLoading] = useState(false);
   const [videoUploading, setVideoUploading] = useState(false);
   const token = JSON.parse(sessionStorage.getItem("sessionToken"));
-
+  const [isVideoRemoved, setVideoRemoved] = useState(false);
   // console.log(edit);
 
   const handleVideo = (vid) => {
@@ -33,6 +33,9 @@ const EditPage = ({
   };
 
   const removeVideo = (videoUrl) => {
+    setEdit({ ...edit, [`bgUrl`]: "" });
+    setVideoRemoved(true);
+    return;
     setLoading(true);
 
     const options = {
@@ -97,7 +100,7 @@ const EditPage = ({
 
       if (response.status === 200) {
         // console.log('Login successful');
-        toast.success("Category updated Successfully.");
+        toast.success("Subpage updated Successfully.");
         setLoading(false);
         closeEditPopup();
         refreshdata();
@@ -212,17 +215,17 @@ const EditPage = ({
               <span className="login-input-label cursor-pointer mb-3">
                 Video :
               </span>
-              {editData?.bgUrl && (
+              {editData?.bgUrl !== "" && !isVideoRemoved && (
                 <div className="p-1 flex">
                   <div
-                    className="text-[14px] font-[400]  cursor-pointer text-[blue] whitespace-nowrap"
+                    className={`text-[14px] font-[400] cursor-pointer text-[blue] whitespace-nowrap`}
                     onClick={() => handleVideo(editData?.bgUrl)}
                   >
                     background video
                   </div>
                   <button
                     type="button"
-                    className="text-[14px] px-4 font-[400] border rounded h-[25px] text-[red] hover:bg-[#efb3b38a] ml-4"
+                    className={`text-[14px] px-4 font-[400] border rounded h-[25px] text-[red] hover:bg-[#efb3b38a] ml-4`}
                     onClick={() => removeVideo(editData?.bgUrl)}
                   >
                     Remove

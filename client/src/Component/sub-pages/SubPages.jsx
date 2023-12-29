@@ -217,13 +217,15 @@ const SubPages = () => {
                         </td>
 
                         <td className="text-[14px] font-[400] px-5 cursor-pointer py-3 ">
-                          <div
-                            className="whitespace-nowrap border border-[#407cb892] bg-[#f0f8ff] hover:bg-[#e3eef7] px-3 py-1 rounded cursor-pointer text-center"
+                        <button
+                            className={`whitespace-nowrap py-1 rounded  text-center ${items?.bgUrl ? "cursor-pointer border border-[#407cb892] bg-[#f0f8ff] hover:bg-[#e3eef7] px-3" : "" }`}
+                            disabled={items?.bgUrl ? true :false}
                             onClick={() => handleVideo(items?.bgUrl)}
-                          >
-                            Video
-                          </div>
+                            >
+                            { items?.bgUrl ? "Video" : "No video"  } 
+                          </button>
                         </td>
+
                         <td className="text-[14px] font-[400] py-3 px-5">
                           <div className="flex flex-col md:flex-row items-center gap-x-3 gap-y-3">
                             <button

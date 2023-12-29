@@ -6,6 +6,8 @@ import axios from "axios";
 import RightSection from "../RightSection";
 import { Link } from "react-router-dom";
 
+import OpenEye from "../Svg/OpenEye";
+import CloseEye from "../Svg/CloseEye";
 
 const ResetPassword = () => {
 
@@ -14,30 +16,36 @@ const ResetPassword = () => {
     const [password, setPassword] = useState("");
     const [isLoading, setLoading] = useState(false);
     const resetToken = params.token
-
+    const [showPassword, setShowPassword] = useState(false);
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
         try {
-            const response = await axios.post('/api/auth/resetpassword', {password:password}, {
+            const response = await axios.put(`/api/auth/resetpassword/${resetToken}`, {password:password}, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${resetToken}`,
+                    // Authorization: `Bearer ${resetToken}`,
                 },
             });
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 toast.success("Password change successful!")
                 setLoading(false)
-                navigate("/login")
+                navigate("/admin-login")
             } else {
                 toast.error("Invalid password!")
                 setLoading(false)
             }
         } catch (error) {
-            console.error('Error during login:', error);
-            toast.error("Failed please try again!")
-            setLoading(false)
+            if (error.status === 401) {
+                toast.error(error?.response?.data)
+                setLoading(false)
+            }
+            else{
+                console.error('Error during login:', error);
+                toast.error("Failed please try again!")
+                setLoading(false)
+            }
         }
     };
 
@@ -58,15 +66,21 @@ const ResetPassword = () => {
                                         Please enter a new password to access admin dashboard
                                     </p>
                                 </div>
-                                <div className="md:py-2">
+                                <div className="relative flex justify-center items-center mt-4 md:py-2">
                                     <input
-                                        type="password"
+                                         type={showPassword ? "text" : "password"}
                                         name="password"
                                         placeholder="Password"
-                                        className="login-input w-full mt-2 custom-input"
+                                        className="login-input w-full  custom-input"
                                         onChange={(e) => setPassword(e.target.value)}
                                         minLength = {8}
                                         required />
+                                         <div
+                        className="absolute right-[10px] cursor-pointer"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <OpenEye /> : <CloseEye />}
+                      </div>
                                 </div>
 
                                 <div className="mt-4">
@@ -78,7 +92,7 @@ const ResetPassword = () => {
                                         {isLoading ? "Loading.." : "Reset password"}
                                     </button>
                                    
-                                    <Link to="/login">
+                                    <Link to="/admin-login">
                                         <div className="text-[16px] font-medium underline text-center py-3 cursor-password">Login</div>
                                     </Link>
                                 </div>

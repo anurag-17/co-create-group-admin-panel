@@ -20,6 +20,7 @@ const ChangePassword = () => {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState("");
   const token = JSON.parse(sessionStorage.getItem("sessionToken"));
+  const adminId = JSON.parse(sessionStorage.getItem("adminId"));
 
   const InputHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,12 +38,12 @@ const ChangePassword = () => {
         setLoading(true);
 
         const response = await axios.post(
-          "/api/auth/changepasswordAdmin",
+          `/api/auth/updatePassword`,
           formData,
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `${token}`,
             },
           }
         );

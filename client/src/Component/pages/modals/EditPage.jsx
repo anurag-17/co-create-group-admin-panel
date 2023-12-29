@@ -17,6 +17,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
   const [video, setVideo] = useState("");
   const [videoview, setVideoview] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const [isVideoRemoved, setVideoRemoved] = useState(false);
   const [videoUploading, setVideoUploading] = useState(false);
   const token = JSON.parse(sessionStorage.getItem("sessionToken"));
 
@@ -28,8 +29,10 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
   };
 
   const removeVideo = (videoUrl) => {
-    setLoading(true);
-
+    // setLoading(true);
+    setEdit({ ...edit, [`bgUrl`]: "" });
+    setVideoRemoved(true);
+    return;
     const options = {
       method: "DELETE",
       url: `${BASE_URL}/api/pages/`,
@@ -37,7 +40,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
         bgUrl: videoUrl,
       },
       headers: {
-        "authorization": `${token}`,
+        authorization: `${token}`,
         "Content-Type": "application/json",
       },
     };
@@ -70,8 +73,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
   const InputHandler = (e) => {
     if (e.target.name === "bgUrl") {
       setVideo({ file: e.target.files[0] });
-    }
-    else if (e.target.name === "isSubpage") {
+    } else if (e.target.name === "isSubpage") {
       setEdit({ ...edit, isSubpage: e.target.value === "yes" });
     } else {
       setEdit({ ...edit, [e.target.name]: e.target.value });
@@ -95,7 +97,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
 
       if (response.status === 200) {
         // console.log('Login successful');
-        toast.success("Category updated Successfully.");
+        toast.success("Page updated Successfully.");
         setLoading(false);
         closeEditPopup();
         refreshdata();
@@ -130,7 +132,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
         // console.log('Video uploaded:', response?.data);
         const videoUrl = response?.data?.url;
 
-        setEdit({ ...edit, 'bgUrl': videoUrl });
+        setEdit({ ...edit, bgUrl: videoUrl });
         setVideoDisable(true);
         setVideoUploading(false);
       } else {
@@ -191,21 +193,23 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
                 Video :
               </span>
 
-              <div className="p-1 flex">
-                <div
-                  className="text-[14px] font-[400]  cursor-pointer text-[blue] whitespace-nowrap"
-                  onClick={() => handleVideo(editData?.bgUrl)}
-                >
-                  background video
+              {editData?.bgUrl !== "" && !isVideoRemoved && (
+                <div className="p-1 flex">
+                  <div
+                    className={`text-[14px] font-[400] cursor-pointer text-[blue] whitespace-nowrap`}
+                    onClick={() => handleVideo(editData?.bgUrl)}
+                  >
+                    background video
+                  </div>
+                  <button
+                    type="button"
+                    className={`text-[14px] px-4 font-[400] border rounded h-[25px] text-[red] hover:bg-[#efb3b38a] ml-4`}
+                    onClick={() => removeVideo(editData?.bgUrl)}
+                  >
+                    Remove
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="text-[14px] px-4 font-[400] border rounded h-[25px] text-[red] hover:bg-[#efb3b38a] ml-4"
-                  onClick={() => removeVideo(editData?.bgUrl)}
-                >
-                  Remove
-                </button>
-              </div>
+              )}
 
               <div className="flex items-center  w-full pt-4">
                 <input
@@ -239,39 +243,38 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
                   : "Upload"}
               </button>
             </div>
-
           </div>
 
-            <div className="py-2 flex items-center gap-x-5">
-              <span className="login-input-label">
-                Are you want to add subpage :
-              </span>
-              <div className="flex gap-x-10 py-3">
-                {/* Radio input for option 1 */}
-                <label className="text-[14px] flex gap-x-3 cursor-pointer">
-                  <input
-                    type="radio"
-                    value="yes"
-                    name="isSubpage"
-                    defaultChecked={editData.isSubpage === true}
-                    onChange={InputHandler}
-                  />
-                  Yes
-                </label>
+          <div className="py-2 flex items-center gap-x-5">
+            <span className="login-input-label">
+              Are you want to add subpage :
+            </span>
+            <div className="flex gap-x-10 py-3">
+              {/* Radio input for option 1 */}
+              <label className="text-[14px] flex gap-x-3 cursor-pointer">
+                <input
+                  type="radio"
+                  value="yes"
+                  name="isSubpage"
+                  defaultChecked={editData.isSubpage === true}
+                  onChange={InputHandler}
+                />
+                Yes
+              </label>
 
-                {/* Radio input for option 2 */}
-                <label className="text-[14px] flex gap-x-3 cursor-pointer">
-                  <input
-                    type="radio"
-                    value="no"
-                    name="isSubpage"
-                    defaultChecked={editData.isSubpage === false}
-                    onChange={InputHandler}
-                  />
-                  No
-                </label>
-              </div>
+              {/* Radio input for option 2 */}
+              <label className="text-[14px] flex gap-x-3 cursor-pointer">
+                <input
+                  type="radio"
+                  value="no"
+                  name="isSubpage"
+                  defaultChecked={editData.isSubpage === false}
+                  onChange={InputHandler}
+                />
+                No
+              </label>
             </div>
+          </div>
 
           <div className="mt-4 flex items-center justify-center md:justify-end  md:flex-nowrap gap-y-3 gap-x-3 ">
             <button
@@ -281,11 +284,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
             >
               Cancel
             </button>
-            <button
-              type="submit"
-               className="primary_btn"
-              disabled={isLoading}
-            >
+            <button type="submit" className="primary_btn" disabled={isLoading}>
               {isLoading ? "Loading.." : "Update"}
             </button>
           </div>
@@ -318,13 +317,12 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-[500px] transform overflow-hidden rounded-2xl bg-white py-10 px-12 text-left align-middle shadow-xl transition-all">
-                <div
+                  <div
                     className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-right absolute right-[15px] top-[15px] cursor-pointer"
                     onClick={closeVideoModal}
                   >
                     <CloseIcon />
                   </div>
-
 
                   <VideoPopup closeModal={closeVideoModal} data={videoview} />
                 </Dialog.Panel>
