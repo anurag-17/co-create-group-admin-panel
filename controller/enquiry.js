@@ -3,25 +3,94 @@ const asyncHandler = require("express-async-handler");
 const validateMongoDbId = require("../utils/validateMongodbId");
 const sendEmail = require("../utils/sendEmail");
 const emailValidator = require('deep-email-validator');
+const dns = require('dns');
 
-async function isEmailValid(email) {
-  return emailValidator.validate(email)
+// Basic email format validation using regex
+function isEmailFormatValid(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
+
+// Check if the email domain exists using DNS lookup
+async function doesEmailDomainExist(email) {
+  const domain = email.split('@')[1];
+
+  return new Promise((resolve) => {
+    dns.resolveMx(domain, (error, addresses) => {
+      resolve(!error && addresses && addresses.length > 0);
+    });
+  });
+}
+
+
+// async function isEmailValid(email) {
+//   try {
+//     const { valid, reason, validators } = await emailValidator.validate(email, {
+//       timeout: 100000, // Set a timeout value in milliseconds (adjust as needed)
+//     });
+
+//     console.log(validators);
+
+//     if (!valid) {
+//       return {
+//         valid: false,
+//         reason: validators[reason].reason,
+//       };
+//     }
+
+//     // Check SMTP validation results
+//     if (!validators.smtp || !validators.smtp.valid) {
+//       return {
+//         valid: false,
+//         reason: "SMTP validation failed",
+//       };
+//     }
+
+//     return {
+//       valid: true,
+//     };
+//   } catch (error) {
+//     console.error(error);
+
+//     // Handle timeout without exposing specific details
+//     if (error.code === "ETIMEDOUT") {
+//       return {
+//         valid: false,
+//         reason: "SMTP validation timed out",
+//       };
+//     }
+
+//     // Handle other errors without exposing details
+//     return {
+//       valid: false,
+//       reason: "Email validation error",
+//     };
+//   }
+// }
 
 // Create a new enquiry
 exports.createEnquiry = asyncHandler(async (req, res) => {
   try {
     const { email } = req.body;
-console.log(req.body)
-    // Validate the email address
-    const { valid, reason, validators } = await isEmailValid(email);
 
-    if (!valid) {
+    // Validate the email address
+    // const { valid, reason } = await isEmailValid(email);
+
+    // if (!valid) {
+    //   return res.status(403).json({
+    //     message: "Please provide a valid email address.",
+    //     reason,
+    //   });
+    // }
+    const isFormatValid = isEmailFormatValid(email);
+    const doesDomainExist = await doesEmailDomainExist(email);
+
+    if (!isFormatValid || !doesDomainExist) {
       return res.status(403).json({
         message: "Please provide a valid email address.",
-        reason: validators[reason].reason
+        reason: "Invalid email format or non-existent domain",
       });
-    };
+    }
 
     const newEnquiry = await Enquiry.create(req.body);
     const userEmail = newEnquiry.email;
