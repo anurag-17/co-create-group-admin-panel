@@ -12,7 +12,7 @@ const Dashboard = () => {
   return (
     <>
       <section>
-        <div className="flex flex-col h-[100vh] justify-center gap-20 items-center bg-white relative" >
+        <div className="flex flex-col h-[100vh] justify-center gap-20 items-center bg-white relative " >
           <div className="absolute right-[35px] top-[15px] cursor-pointer ">
             {/* <ProfileIcon /> */}
 
@@ -35,7 +35,7 @@ const Dashboard = () => {
                 leaveFrom="transform scale-100"
                 leaveTo="transform scale-95"
               >
-                <Menu.Items className="absolute right-0 w-56 z-50 mt-2 px-2 py-5 shadow-2xl rounded-lg origin-top-right border border-[#f3f3f3]  side-profile">
+                <Menu.Items className="absolute right-0 w-56 z-[999] bg-[white] mt-2 px-2 py-5 shadow-2xl rounded-lg origin-top-right border border-[#f3f3f3]  side-profile">
                   <div className="p-1 flex flex-col gap-4">
 
                     <Menu.Item>
@@ -67,7 +67,7 @@ const Dashboard = () => {
             <h3 className="text-[28px] font-bold">Welcome</h3>
             <h5 className="pt-2 text-[25px] font-semibold ">Admin Dashboard</h5>
           </div>
-          <div className="w-[30%]">
+          <div className="lg:w-[30%] md:-[40%] w-[80%]">
             <img src={dash_img} alt="welcome dashboard" className="w-full" />
           </div>
         </div>

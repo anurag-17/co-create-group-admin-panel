@@ -74,6 +74,7 @@ const Pages = () => {
   };
 
   const handleVideo = (vid) => {
+    console.log(vid)
     setOpenVideo(true);
     setVideoUrl(vid)
   };
@@ -191,7 +192,7 @@ const Pages = () => {
                          
                          <button
                             className={`whitespace-nowrap py-1 rounded  text-center ${items?.bgUrl ? "cursor-pointer border border-[#407cb892] bg-[#f0f8ff] hover:bg-[#e3eef7] px-3" : "" }`}
-                            disabled={items?.bgUrl ? true :false}
+                            disabled={items?.bgUrl ? false : true}
                             onClick={() => handleVideo(items?.bgUrl)}
                             >
                             { items?.bgUrl ? "Video" : "No video"  } 

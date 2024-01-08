@@ -52,7 +52,7 @@ const SideMenu = () => {
   const [ComponentId, setComponentId] = useState(1);
   const [showDrawer, setShowDrawer] = useState(false);
   const navigate = useNavigate();
-
+  console.log(showDrawer);
   const handleClick = (id) => {
     setComponentId(id);
     setShowDrawer(false);
@@ -67,19 +67,21 @@ const SideMenu = () => {
   return (
     <section className="">
       <div className="flex min-h-screen relative lg:static">
-        <div
-          className="py-2 px-3  absolute top-4 left-2 flex flex-col gap-[5px] cursor-pointer lg:hidden"
-          onClick={() => setShowDrawer(true)}
-        >
-          <div className="bg-black h-[2px] w-[20px]"></div>
-          <div className="bg-black h-[2px] w-[20px]"></div>
-          <div className="bg-black h-[2px] w-[20px]"></div>
-        </div>
+        {!showDrawer && (
+          <div
+            className="py-2 px-3  absolute top-4 left-2 flex flex-col gap-[5px] cursor-pointer lg:hidden z-10"
+            onClick={() => setShowDrawer(true)}
+          >
+            <div className="bg-black h-[2px] w-[20px] z-10"></div>
+            <div className="bg-black h-[2px] w-[20px] z-10"></div>
+            <div className="bg-black h-[2px] w-[20px] z-10"></div>
+          </div>
+        )}
         <div
           className={`w-[300px] bg-menu_primary text-white lg:px-[20px] px-[10px]  drawer
                  ${
                    showDrawer
-                     ? "block  absolute top-0 left-0 min-h-screen is-show"
+                     ? "block  absolute top-0 left-0 min-h-screen is-show z-10"
                      : "hidden lg:block"
                  }`}
         >
@@ -96,7 +98,7 @@ const SideMenu = () => {
           <div className="flex flex-col justify-between min-h-screen  lg:py-[40px] py-[10px] ">
             <div className="">
               <div className="flex justify-center items-center whitespace-pre-wrap ">
-                <h1 className="2xl:text-[30px] lg:text-[26px] text-[24px] font-semibold  text-center whitespace-nowrap">
+                <h1 className="2xl:text-[30px] lg:text-[26px] text-[24px] font-semibold  text-center whitespace-nowrap pt-4">
                   Admin Dashboard
                 </h1>
               </div>
