@@ -344,7 +344,7 @@ const SubPages = () => {
                     <CloseIcon />
                   </div>
                   <Dialog.Title className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-center md:text-left px-2">
-                    Add new page
+                    Add new subpage
                   </Dialog.Title>
                   <AddNewPage
                     pageData={allPagesName}
@@ -391,7 +391,7 @@ const SubPages = () => {
                     <CloseIcon />
                   </div>
                   <Dialog.Title className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-center md:text-left px-2">
-                    Edit page content
+                    Edit subpage content
                   </Dialog.Title>
                   <EditPage
                     pageData={allPagesName}
@@ -440,7 +440,7 @@ const SubPages = () => {
                     <CloseIcon />
                   </div>
                   <Dialog.Title className="xl:text-[20px] text-[18px] font-medium leading-6 text-gray-900 text-center md:text-left px-2">
-                    Delete page
+                    Delete subpage
                   </Dialog.Title>
                   <DeletePage
                     refreshdata={refreshData}

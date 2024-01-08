@@ -198,7 +198,7 @@ const EditPage = ({
               id=""
               onChange={InputHandler}
               // defaultValue={editData?.pageId?.title}
-              defaultValue={editData?.pageId?.title || ""}
+              value={editData?.pageId?.title || ""}
               className="login-input w-full mt-1  "
             >
               <option value="">Choose main page</option>

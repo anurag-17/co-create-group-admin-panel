@@ -53,7 +53,7 @@ const ChangePassword = () => {
           setLoading(false);
           setError("");
           sessionStorage.removeItem("sessionToken");
-          navigate("/");
+          navigate("/admin-login");
         } else {
           toast.error(response?.data || "Invalid credentials");
           setLoading(false);

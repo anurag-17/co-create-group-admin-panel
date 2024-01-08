@@ -42,7 +42,7 @@ function App() {
             element={<PrivateRoute element={<SideMenu />} />}
           />
           <Route
-            path="/"
+            path="/side-nav"
             element={<PrivateRoute element={<SideMenu />} />}
           />
 
