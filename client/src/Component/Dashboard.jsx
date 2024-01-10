@@ -44,7 +44,7 @@ const Dashboard = () => {
                         className="flex gap-x-3 hover:bg-lightBlue-600 hover:underline text-gray-700 rounded  text-sm group transition-colors items-center"
                       >
                         <PasswordIcon className="h-4 w-4 mr-2" />
-                        Change password
+                        Change Password
                       </Link>
                     </Menu.Item>
                     <Menu.Item>
@@ -54,7 +54,7 @@ const Dashboard = () => {
 
                       >
                         <SignOutIcon  />
-                        Sign out
+                        Sign Out
                       </Link>
                     </Menu.Item>
                   </div>

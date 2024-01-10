@@ -63,7 +63,10 @@ const AddNewPage = ({ closeAddPopup, refreshdata, pageData }) => {
     e.preventDefault();
     if (formData.bgUrl == "") {
       toast.error("Please upload video");
-    } else {
+     } else if( formData.pageId === ""){
+      toast.error("Please add main page");
+     }
+    else {
       console.log(formData);
       setLoading(true);
       try {

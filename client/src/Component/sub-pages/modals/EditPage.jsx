@@ -305,9 +305,6 @@ const EditPage = ({
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-[500px] transform overflow-hidden rounded-2xl bg-white py-10 px-12 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title className="xl:text-[20px] text-[18px] text-right font-medium leading-6 text-gray-900">
-                    close
-                  </Dialog.Title>
 
                   <VideoPopup closeModal={closeVideoModal} data={videoview} />
                 </Dialog.Panel>

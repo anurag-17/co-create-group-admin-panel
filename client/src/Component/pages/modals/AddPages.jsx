@@ -81,7 +81,7 @@ const AddNewPage = ({ closeAddPopup, refreshdata }) => {
         );
         console.log(response);
         if (response.status === 201) {
-          toast.success("Category created successfully.");
+          toast.success("Page added successfully.");
           setLoading(false);
           refreshdata();
           closeAddPopup();
