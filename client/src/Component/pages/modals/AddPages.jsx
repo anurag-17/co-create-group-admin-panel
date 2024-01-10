@@ -177,7 +177,7 @@ const AddNewPage = ({ closeAddPopup, refreshdata }) => {
               </div>
             </div>
 
-            <div className="py-2 flex items-center gap-x-5">
+            <div className="py-2 flex md:flex-row flex-col md:items-center gap-x-5 mt-2  md:mt-0">
               <span className="login-input-label">
                 Are you want to add subpage :
               </span>
