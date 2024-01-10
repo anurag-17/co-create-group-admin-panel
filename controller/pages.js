@@ -22,10 +22,18 @@ exports.createPage = asyncHandler(async (req, res) => {
 
 // Update an existing page
 exports.updatePage = asyncHandler(async (req, res) => {
-  const { id } = req.body;
+  const { id, isSubpage } = req.body;
   validateMongoDbId(id);
 
-  const updatedPage = await Pages.findByIdAndUpdate(id, req.body, {
+  let updatedPage;
+
+  if (isSubpage === false) {
+    // If isSubpage is set to false, delete related SubPages
+    await SubPages.deleteMany({ pageId: id });
+  }
+
+  // Update the Pages document
+  updatedPage = await Pages.findByIdAndUpdate(id, req.body, {
     new: true,
   });
 
