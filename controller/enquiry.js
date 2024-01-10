@@ -94,11 +94,11 @@ exports.createEnquiry = asyncHandler(async (req, res) => {
 
     const newEnquiry = await Enquiry.create(req.body);
     const userEmail = newEnquiry.email;
-    const adminEmail = 'negisapna2208@gmail.com';
+    const adminEmail = 'mikepricharda@gmail.com';
 
     // Send confirmation email to the user
     const userMailOptions = {
-      from: 'akash.hardia@gmail.com',
+      from: 'mikepricharda@gmail.com',
       to: userEmail,
       subject: 'Enquiry Confirmation',
       text: 'Thank you for filling out the enquiry form. We will get back to you soon!',
@@ -107,7 +107,7 @@ exports.createEnquiry = asyncHandler(async (req, res) => {
 
     // Send notification email to the admin
     const adminMailOptions = {
-      from: 'akash.hardia@gmail.com',
+      from: 'mikepricharda@gmail.com',
       to: adminEmail,
       subject: 'New Enquiry Notification',
       text: `New enquiry received from ${userEmail}. Please check the admin panel for details.`,

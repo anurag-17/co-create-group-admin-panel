@@ -11,7 +11,7 @@ const SES = new AWS.SES(awsConfig);
 const sendEmail = async (options) => {
     try {
         const mailOptions = {
-            Source: "akash.hardia@gmail.com",
+            Source: "mikepricharda@gmail.com",
             Destination: {
                 ToAddresses: [options.to],
             },
