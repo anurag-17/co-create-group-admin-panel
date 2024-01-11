@@ -5,6 +5,7 @@ const s3Bucket = new AWS.S3({
     accessKeyId: process.env.awsAccessKey,
     secretAccessKey: process.env.awsSecretkey,
     region: process.env.region,
+    endpoint: 'co-create-group.s3-accelerate.amazonaws.com',
 });
 
 function uploadOnS3(file, filename, contentType) {
