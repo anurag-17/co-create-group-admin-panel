@@ -77,8 +77,6 @@ const AdminLogin = () => {
                       placeholder="Email address"
                       className="login-input w-full mt-2 custom-input"
                       onChange={InputHandler}
-                      pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                      title="enter valid email ex. abc@gmail.com"
                       required
                     />
                   </div>

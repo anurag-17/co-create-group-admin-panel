@@ -69,8 +69,6 @@ const ForgotPassword = () => {
                       setEmail(e.target.value);
                       setError("");
                     }}
-                    pattern="[-a-zA-Z0-9~!$%^ *_=+}{'?]+(\.[-a-zA-Z0-9~!$%^ *_=+}{'?]+)*@([a-zA-Z0-9_][-a-zA-Z0-9_]*(\.[-a-zA-Z0-9_]+)*\.([cC][oO][mM]))(:[0-9]{1,5})?"
-                    title="enter valid email ex. abc@gmail.com"
                     required
                   />
                 </div>
