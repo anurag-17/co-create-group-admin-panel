@@ -82,7 +82,7 @@ const AddNewPage = ({ closeAddPopup, refreshdata, pageData }) => {
         );
         console.log(response);
         if (response.status === 201) {
-          toast.success("Category created successfully.");
+          toast.success("Subpage added successfully.");
           setLoading(false);
           refreshdata();
           closeAddPopup();
