@@ -144,6 +144,7 @@ const EditPage = ({ closeEditPopup, editData, refreshdata, updateId }) => {
         "Error uploading video:",
         error.response?.data || error.message
       );
+      setVideoUploading(false);
       // Handle the error: show a message or perform an action accordingly
     }
   };

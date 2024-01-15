@@ -66,7 +66,7 @@ const AddNewPage = ({ closeAddPopup, refreshdata }) => {
     if (formData.bgUrl == "") {
       toast.error("Please upload video");
     } else {
-      console.log(formData);
+      // console.log(formData);
       setLoading(true);
       try {
         const response = await axios.post(
