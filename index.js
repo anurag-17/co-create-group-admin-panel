@@ -40,6 +40,9 @@ app.use("/api/contacts", require("./routes/contacts"));
 // Contacts
 app.use("/api/enquiry", require("./routes/enquiry"));
 
+// Schedule
+app.use("/api/schedule", require("./routes/schedules"));
+
 
 if (process.env.NODE_ENV === "dev") { //replaced "production" with "dev"
 
