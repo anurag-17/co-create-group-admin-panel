@@ -11,9 +11,11 @@ import Enquiry from "./enquiry/Enquiry";
 import ContactDetails from "./contact-details/ContactDetails";
 import PageIcon from "../assets/svg/page.svg";
 import HomeIcon from "../assets/svg/home.svg";
+import CallIcon from "../assets/svg/call.svg";
 import webIcon from "../assets/svg/web-site.svg";
 import conversation from "../assets/svg/conversation.svg";
 import contactIcon from "../assets/svg/contact-mail.svg";
+import ScheduleMeeting from "./schedule-meeting/ScheduleMeeting";
 
 export const menus = [
   {
@@ -46,10 +48,16 @@ export const menus = [
     component: <ContactDetails />,
     icon: contactIcon,
   },
+  {
+    id: 6,
+    label: "Schedule call",
+    component: <ScheduleMeeting />,
+    icon: CallIcon,
+  },
 ];
 
 const SideMenu = () => {
-  const [ComponentId, setComponentId] = useState(1);
+  const [ComponentId, setComponentId] = useState(6);
   const [showDrawer, setShowDrawer] = useState(false);
   const navigate = useNavigate();
   console.log(showDrawer);
