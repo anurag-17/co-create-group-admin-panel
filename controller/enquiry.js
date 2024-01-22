@@ -4,6 +4,7 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 const sendEmail = require("../utils/sendEmail");
 const emailValidator = require('deep-email-validator');
 const dns = require('dns');
+const fetch = require('node-fetch');
 
 // Basic email format validation using regex
 function isEmailFormatValid(email) {
@@ -71,17 +72,10 @@ async function doesEmailDomainExist(email) {
 // Create a new enquiry
 exports.createEnquiry = asyncHandler(async (req, res) => {
   try {
+    // Your existing code for creating an enquiry
     const { email } = req.body;
 
     // Validate the email address
-    // const { valid, reason } = await isEmailValid(email);
-
-    // if (!valid) {
-    //   return res.status(403).json({
-    //     message: "Please provide a valid email address.",
-    //     reason,
-    //   });
-    // }
     const isFormatValid = isEmailFormatValid(email);
     const doesDomainExist = await doesEmailDomainExist(email);
 
@@ -113,6 +107,26 @@ exports.createEnquiry = asyncHandler(async (req, res) => {
       text: `New enquiry received from ${userEmail}. Please check the admin panel for details.`,
     };
     await sendEmail(adminMailOptions);
+
+    // Mailchimp integration
+    const mailchimpUrl = 'https://thecocreategroup.us21.list-manage.com/subscribe/post?u=6c603f25a9c0afd6338056f72&id=9c33e76f8a&f_id=00aefbe6f0';
+
+    try {
+      const mailchimpResponse = await fetch(mailchimpUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          EMAIL: userEmail,
+        }),
+      });
+
+      const data = await mailchimpResponse.json();
+      console.log('Mailchimp Response:', data);
+    } catch (error) {
+      console.error('Mailchimp Error:', error);
+    }
 
     res.status(201).json(newEnquiry);
   } catch (error) {
