@@ -4,7 +4,8 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 const sendEmail = require("../utils/sendEmail");
 const emailValidator = require('deep-email-validator');
 const dns = require('dns');
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
+const axios = require('axios');
 
 // Basic email format validation using regex
 function isEmailFormatValid(email) {
@@ -121,11 +122,35 @@ exports.createEnquiry = asyncHandler(async (req, res) => {
           EMAIL: userEmail,
         }),
       });
-
-      const data = await mailchimpResponse.json();
-      console.log('Mailchimp Response:', data);
+    
+      console.log(mailchimpResponse);
+    
+      if (!mailchimpResponse.ok) {
+        throw new Error(`Mailchimp API request failed with status ${mailchimpResponse.status}`);
+      }
+    
+      // Check if the response is in JSON format
+      const contentType = mailchimpResponse.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const responseData = await mailchimpResponse.json();
+        
+        // Extract the redirect URL from the response headers
+        const redirectUrl = mailchimpResponse.headers.get('location');
+    
+        // Log the response and redirect URL
+        console.log('Mailchimp Response:', responseData);
+        console.log('Mailchimp Redirect URL:', redirectUrl);
+        
+      } else {
+        // Handle non-JSON response (e.g., HTML error page) appropriately
+        const nonJsonResponse = await mailchimpResponse.text();
+        console.error('Mailchimp Error:', nonJsonResponse);
+        res.status(403).json({ error: 'Unexpected response from Mailchimp' });
+      }
     } catch (error) {
-      console.error('Mailchimp Error:', error);
+      console.error('Mailchimp Error:', error.message);
+      // Handle other Mailchimp errors appropriately
+      res.status(500).json({ error: 'Internal Server Error' });
     }
 
     res.status(201).json(newEnquiry);
