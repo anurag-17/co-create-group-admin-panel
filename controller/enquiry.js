@@ -128,30 +128,45 @@ exports.createEnquiry = asyncHandler(async (req, res) => {
       if (!mailchimpResponse.ok) {
         throw new Error(`Mailchimp API request failed with status ${mailchimpResponse.status}`);
       }
-    
-      // Check if the response is in JSON format
-      const contentType = mailchimpResponse.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        const responseData = await mailchimpResponse.json();
-        
-        // Extract the redirect URL from the response headers
-        const redirectUrl = mailchimpResponse.headers.get('location');
-    
-        // Log the response and redirect URL
-        console.log('Mailchimp Response:', responseData);
-        console.log('Mailchimp Redirect URL:', redirectUrl);
-        
+
+      if (mailchimpResponse.ok) {
+        // Send a success response
+        res.status(201).json({
+          message: 'Enquiry created successfully',
+          status: 'success',
+        });
       } else {
-        // Handle non-JSON response (e.g., HTML error page) appropriately
-        const nonJsonResponse = await mailchimpResponse.text();
-        console.error('Mailchimp Error:', nonJsonResponse);
-        res.status(403).json({ error: 'Unexpected response from Mailchimp' });
+        throw new Error(`Mailchimp API request failed with status ${mailchimpResponse.status}`);
       }
+
     } catch (error) {
       console.error('Mailchimp Error:', error.message);
-      // Handle other Mailchimp errors appropriately
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(401).json({ error: 'Internal Server Error' });
     }
+    
+      // Check if the response is in JSON format
+      // const contentType = mailchimpResponse.headers.get('content-type');
+      // if (contentType && contentType.includes('application/json')) {
+      //   const responseData = await mailchimpResponse.json();
+        
+      //   // Extract the redirect URL from the response headers
+      //   const redirectUrl = mailchimpResponse.headers.get('location');
+    
+      //   // Log the response and redirect URL
+      //   console.log('Mailchimp Response:', responseData);
+      //   console.log('Mailchimp Redirect URL:', redirectUrl);
+        
+      // } else {
+      //   // Handle non-JSON response (e.g., HTML error page) appropriately
+      //   const nonJsonResponse = await mailchimpResponse.text();
+      //   console.error('Mailchimp Error:', nonJsonResponse);
+      //   res.status(403).json({ error: 'Unexpected response from Mailchimp' });
+      // }
+    // } catch (error) {
+    //   console.error('Mailchimp Error:', error.message);
+    //   // Handle other Mailchimp errors appropriately
+    //   res.status(500).json({ error: 'Internal Server Error' });
+    // }
 
     res.status(201).json(newEnquiry);
   } catch (error) {
