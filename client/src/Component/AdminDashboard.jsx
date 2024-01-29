@@ -48,12 +48,12 @@ export const menus = [
     component: <ContactDetails />,
     icon: contactIcon,
   },
-  {
-    id: 6,
-    label: "Schedule call",
-    component: <ScheduleMeeting />,
-    icon: CallIcon,
-  },
+  // {
+  //   id: 6,
+  //   label: "Schedule call",
+  //   component: <ScheduleMeeting />,
+  //   icon: CallIcon,
+  // },
 ];
 
 const SideMenu = () => {
