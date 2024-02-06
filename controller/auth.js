@@ -284,7 +284,7 @@ exports.deleteData = async (req, res, next) => {
 
 exports.chatApi = async (req, res) => {
   try {
-    const { apiRequestBody } = req.body;
+    const  apiRequestBody  = req.body;
 
     // Construct the request body for communicating with OpenAI
     // const requestBody = {
