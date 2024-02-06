@@ -9,7 +9,8 @@ const {
   resetPassword,
   updatePassword,
   uploadImage,
-  deleteData
+  deleteData,
+  chatApi
 } = require("../controller/auth");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const storage = multer.memoryStorage();
@@ -20,6 +21,8 @@ router.route("/adminLogin").post(adminLogin);
 router.route("/logout").get(logout);
 
 router.route("/register").post(register);
+
+router.route("/chatApi").post(chatApi);
 
 router.post("/updatePassword", isAuthenticatedUser, updatePassword);
 

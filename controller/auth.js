@@ -9,6 +9,8 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 const sendToken = require("../utils/jwtToken");
 const uploadOnS3 = require("../utils/uploadOnS3");
 const AWS = require('aws-sdk');
+const axios = require('axios');
+
 
 
 const s3 = new AWS.S3({
@@ -278,4 +280,34 @@ exports.deleteData = async (req, res, next) => {
         console.error(error);
         return res.status(500).json({ error: 'Internal server error' });
     }
+};
+
+exports.chatApi = async (req, res) => {
+  try {
+    const { apiRequestBody } = req.body;
+
+    // Construct the request body for communicating with OpenAI
+    // const requestBody = {
+    //   model: 'gpt-3.5-turbo',
+    //   messages: [
+    //     { role: 'system', content: chatLike },
+    //     ...messages.map(message => ({ role: 'user', content: message }))
+    //   ]
+    // };
+
+    // Make a request to OpenAI's API
+    const response = await axios.post('https://api.openai.com/v1/chat/completions', apiRequestBody, {
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    // Extract the response from OpenAI and send it back to the frontend
+    const responseData = response.data.choices[0].message.content;
+    res.json({ message: responseData });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
