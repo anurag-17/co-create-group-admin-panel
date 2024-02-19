@@ -10,8 +10,9 @@ const sendToken = require("../utils/jwtToken");
 const uploadOnS3 = require("../utils/uploadOnS3");
 const AWS = require('aws-sdk');
 const axios = require('axios');
+const { OpenAI } = require('openai');
 
-
+const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.awsAccessKey,
@@ -311,3 +312,75 @@ exports.chatApi = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+exports.createThread = async (req, res) => {
+  try {
+    const emptyThread = await openai.beta.threads.create();
+    res.status(201).json(emptyThread);
+  } catch (error) {
+    console.error('Error creating thread:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+const ASSISTANTID = process.env.ASS_ID;
+
+const getAnswer = async (threadId, runId) => {
+  try {
+    const getRun = await openai.beta.threads.runs.retrieve(threadId, runId);
+
+    if (getRun.status === "completed") {
+      const messages = await openai.beta.threads.messages.list(threadId);
+      const botResponse = messages.data[0].content[0].text.value;
+      return botResponse;
+    } else {
+      return new Promise((resolve) => {
+        setTimeout(async () => {
+          resolve(await getAnswer(threadId, runId));
+        }, 2000);
+      });
+    }
+  } catch (error) {
+    console.error("Error retrieving answer:", error);
+    throw error;
+  }
+};
+
+exports.sendMessage = async (req, res) => {
+  const { threadId, message } = req.body;
+  try {
+    const send = await openai.beta.threads.messages.create(threadId, {
+      role: 'user',
+      content: message
+    });
+      const getRun =  await openai.beta.threads.runs.create(threadId, { assistant_id: ASSISTANTID });
+      const runId = getRun.id;
+      const botResponse = await getAnswer(threadId, runId);
+      
+      if (botResponse) {
+        const messagesResponse = await openai.beta.threads.messages.list(threadId);
+        const messages = messagesResponse.body.data.map(message => ({
+          role: message.role,
+          message: message.content[0].text.value
+        }));
+        messages.reverse();
+        res.status(200).json({messages}); 
+      } else {
+        res.status(500).json({ error: 'Bot response not available yet' });
+      }
+
+  } catch (error) {
+    console.error('Error sending message:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+exports.getMessage = async (req, res) => {
+  const { threadId } = req.params;
+  try {
+    const messages = await openai.beta.threads.messages.list(threadId);
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error('Error getting messages:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}

@@ -10,7 +10,10 @@ const {
   updatePassword,
   uploadImage,
   deleteData,
-  chatApi
+  chatApi,
+  createThread,
+  sendMessage,
+  getMessage
 } = require("../controller/auth");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const storage = multer.memoryStorage();
@@ -23,6 +26,12 @@ router.route("/logout").get(logout);
 router.route("/register").post(register);
 
 router.route("/chatApi").post(chatApi);
+
+router.route("/create-thread").post(createThread);
+
+router.route("/send-message").post(sendMessage);
+
+router.route("/get-messages/:threadId").get(getMessage);
 
 router.post("/updatePassword", isAuthenticatedUser, updatePassword);
 
