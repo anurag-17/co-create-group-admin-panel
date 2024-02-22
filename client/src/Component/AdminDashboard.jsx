@@ -16,6 +16,7 @@ import webIcon from "../assets/svg/web-site.svg";
 import conversation from "../assets/svg/conversation.svg";
 import contactIcon from "../assets/svg/contact-mail.svg";
 import ScheduleMeeting from "./schedule-meeting/ScheduleMeeting";
+import Newsletter from "./newsletter/Newsletter";
 
 export const menus = [
   {
@@ -48,12 +49,12 @@ export const menus = [
     component: <ContactDetails />,
     icon: contactIcon,
   },
-  // {
-  //   id: 6,
-  //   label: "Schedule call",
-  //   component: <ScheduleMeeting />,
-  //   icon: CallIcon,
-  // },
+  {
+    id: 6,
+    label: "Signup members",
+    component: <Newsletter />,
+    icon: CallIcon,
+  },
 ];
 
 const SideMenu = () => {
@@ -113,11 +114,11 @@ const SideMenu = () => {
               <div className="bg-white h-[1px] w-[70%] mx-auto mt-[40px]"></div>
             </div>
 
-            <div className="flex flex-col 2xl:gap-6 gap-3 ">
+            <div className="flex flex-col 2xl:gap-6 gap-3 pt-[20px]">
               {menus.map((item, index) => (
                 <div
                   key={index}
-                  className={`pl-6 py-3 mx-5 rounded-md  flex gap-x-3 items-center cursor-pointer  transition-colors font-semibold dash-menu  hover:transition-all ease-in delay-100 duration-300  
+                  className={`pl-3 py-3 mx-5 rounded-md  flex gap-x-3 items-center cursor-pointer  transition-colors font-semibold dash-menu  hover:transition-all ease-in delay-100 duration-300  
                                     ${
                                       item.id === ComponentId
                                         ? "bg-menu_secondary"
