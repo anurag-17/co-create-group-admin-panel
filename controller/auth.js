@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Newletter = require("../models/Newsletter");
 const ErrorResponse = require("../utils/errorRes");
 const sendEmail = require("../utils/sendEmail");
 const validateMongoDbId = require("../utils/validateMongodbId");
@@ -38,6 +39,50 @@ exports.register = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.signUp = async (req, res, next) => {
+  const { email } = req.body;
+
+  try {
+    const newUser = await Newletter.create({ email });
+    res.status(200).json(newUser);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getNewsletter = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+
+    const searchQuery = req.query.search;
+
+    const newsletterQuery = Newletter.find();
+
+    if (searchQuery) {
+      newsletterQuery.regex("email", new RegExp(searchQuery, "i"));
+    }
+
+    const total = await Newletter.countDocuments(newsletterQuery);
+
+    const newsletter = await newsletterQuery.skip(skip).limit(limit).exec();
+  
+    const totalPages = Math.ceil(total / limit);
+
+    res.json({
+      total,
+      page,
+      totalPages,
+      newsletter,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
