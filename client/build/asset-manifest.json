@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.76713cdb.css",
-    "main.js": "/static/js/main.52b852b3.js",
+    "main.js": "/static/js/main.fa5075f7.js",
     "static/js/787.d5fa4d18.chunk.js": "/static/js/787.d5fa4d18.chunk.js",
     "static/media/Mukta-Regular.ttf": "/static/media/Mukta-Regular.044d4dd07d7636695eda.ttf",
     "static/media/Mukta-Medium.ttf": "/static/media/Mukta-Medium.1dbcaa3b34d2fe6808d3.ttf",
@@ -18,11 +18,11 @@
     "static/media/call.svg": "/static/media/call.33d5102f301272a72d71f8e42885bd77.svg",
     "static/media/home.svg": "/static/media/home.e3f3838f9f4ff285b8105912a256ab01.svg",
     "main.76713cdb.css.map": "/static/css/main.76713cdb.css.map",
-    "main.52b852b3.js.map": "/static/js/main.52b852b3.js.map",
+    "main.fa5075f7.js.map": "/static/js/main.fa5075f7.js.map",
     "787.d5fa4d18.chunk.js.map": "/static/js/787.d5fa4d18.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.76713cdb.css",
-    "static/js/main.52b852b3.js"
+    "static/js/main.fa5075f7.js"
   ]
 }
