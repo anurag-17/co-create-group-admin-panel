@@ -17,7 +17,7 @@ const DeletePage = ({ deleteId, closeModal, refreshdata }) => {
 
     const options = {
       method: "DELETE",
-      url: `${BASE_URL}/api/enquiry/deleteEnquiry`,
+      url: `${BASE_URL}/api/auth/deleteNewsletter`,
       data: {
         id: deleteId,
       },
@@ -53,7 +53,7 @@ const DeletePage = ({ deleteId, closeModal, refreshdata }) => {
     <>
       <div className="mt-2">
         <p className=" text-[16px] font-normal leading-[30px] text-gray-500 mt-4">
-          Are you sure you want to delete this page ?
+          Are you sure you want to delete this member ?
         </p>
       </div>
 
