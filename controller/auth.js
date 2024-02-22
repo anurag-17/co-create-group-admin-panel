@@ -83,6 +83,13 @@ exports.getNewsletter = async (req, res) => {
   }
 };
 
+exports.deleteNewsletter = async (req, res) => {
+  const { id } = req.body;
+  validateMongoDbId(id);
+
+  const deletedNewsletter = await Newletter.findByIdAndDelete(id);
+  res.json(deletedNewsletter);
+};
 
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
