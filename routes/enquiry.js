@@ -7,6 +7,7 @@ const {
     deleteEnquiry,
     getEnquiry,
     getAllEnquiries,
+    enquiryData
 } = require("../controller/enquiry");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 
@@ -19,5 +20,7 @@ router.delete("/deleteEnquiry", deleteEnquiry);
 router.get("/getEnquiry/:id", getEnquiry);
 
 router.get("/getAllEnquiries", getAllEnquiries);
+
+router.get("/enquiryData", enquiryData);
 
 module.exports = router;

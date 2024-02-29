@@ -16,7 +16,8 @@ const {
   getMessage,
   signUp,
   getNewsletter,
-  deleteNewsletter
+  deleteNewsletter,
+  newsLetterData
 } = require("../controller/auth");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const storage = multer.memoryStorage();
@@ -31,6 +32,8 @@ router.route("/register").post(register);
 router.route("/signup").post(signUp);
 
 router.route("/getNewsletter").get(getNewsletter);
+
+router.route("/newsLetterData").get(newsLetterData);
 
 router.route("/deleteNewsletter").delete(deleteNewsletter);
 

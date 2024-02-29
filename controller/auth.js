@@ -12,6 +12,7 @@ const uploadOnS3 = require("../utils/uploadOnS3");
 const AWS = require('aws-sdk');
 const axios = require('axios');
 const { OpenAI } = require('openai');
+const CsvParser = require("json2csv").Parser;
 
 const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
@@ -82,6 +83,29 @@ exports.getNewsletter = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+exports.newsLetterData = async (req, res) => {
+  try {
+    let users = [];
+
+    var invitationData = await Newletter.find({});
+
+    invitationData.forEach((user) => {
+      const { email } = user;
+      users.push({ email });
+    });
+    const fields = [ "email" ];
+    const csvParser = new CsvParser({ fields });
+    const data = csvParser.parse(users);
+
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", "attachment: filename=newsLetterData.csv");
+
+    res.status(200).end(data);
+  } catch (error) {
+    res.status(400).json({ msg: error.message, status: false });
+  }
+}
 
 exports.deleteNewsletter = async (req, res) => {
   const { id } = req.body;

@@ -6,7 +6,7 @@ const emailValidator = require('deep-email-validator');
 const dns = require('dns');
 // const fetch = require('node-fetch');
 const axios = require('axios');
-
+const CsvParser = require("json2csv").Parser;
 // Basic email format validation using regex
 function isEmailFormatValid(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -129,15 +129,15 @@ exports.createEnquiry = asyncHandler(async (req, res) => {
         throw new Error(`Mailchimp API request failed with status ${mailchimpResponse.status}`);
       }
 
-      if (mailchimpResponse.ok) {
+      // if (mailchimpResponse.ok) {
         // Send a success response
         res.status(201).json({
           message: 'Enquiry created successfully',
           status: 'success',
         });
-      } else {
-        throw new Error(`Mailchimp API request failed with status ${mailchimpResponse.status}`);
-      }
+      // } else {
+      //   throw new Error(`Mailchimp API request failed with status ${mailchimpResponse.status}`);
+      // }
 
     } catch (error) {
       console.error('Mailchimp Error:', error.message);
@@ -242,3 +242,26 @@ exports.getAllEnquiries = asyncHandler(async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+exports.enquiryData = async (req, res, next) => {
+  try {
+    let users = [];
+
+    var invitationData = await Enquiry.find({});
+
+    invitationData.forEach((user) => {
+      const { email } = user;
+      users.push({ email });
+    });
+    const fields = [ "email" ];
+    const csvParser = new CsvParser({ fields });
+    const data = csvParser.parse(users);
+
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", "attachment: filename=EnquirieData.csv");
+
+    res.status(200).end(data);
+  } catch (error) {
+    res.status(400).json({ msg: error.message, status: false });
+  }
+};
