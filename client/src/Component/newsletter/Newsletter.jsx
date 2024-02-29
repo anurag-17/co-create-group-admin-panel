@@ -74,7 +74,7 @@ const Newsletter = () => {
       <section>
         <div className="py-[30px] px-[20px] mx-auto mt-[20px] bg-[#f3f3f3] lg:mt-0 ">
           <div className="rounded-[10px] bg-white py-[15px] flex justify-center md:justify-between gap-x-20 items-center flex-wrap md:flex-auto gap-y-5 px-[20px]">
-            <p className=" text-[24px] font-semibold text-left ">Monthly N  ewsletter  Members</p>
+            <p className=" text-[24px] font-semibold text-left ">Monthly Newsletter  Members</p>
           </div>
 
           {Array.isArray(allData?.newsletter) &&
